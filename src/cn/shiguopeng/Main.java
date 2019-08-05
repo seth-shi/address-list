@@ -1,6 +1,6 @@
 package cn.shiguopeng;
 
-import cn.shiguopeng.views.Login;
+import cn.shiguopeng.controlllers.Login;
 import javafx.application.Application;
 
 public class Main {
