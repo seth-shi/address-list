@@ -1,11 +1,14 @@
 package cn.shiguopeng;
 
-import cn.shiguopeng.controlllers.Login;
+import cn.shiguopeng.views.Login;
 import javafx.application.Application;
+
+import java.io.IOException;
 
 public class Main {
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
 
         Application.launch(Login.class, args);
     }
