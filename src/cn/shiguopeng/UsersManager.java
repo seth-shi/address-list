@@ -8,7 +8,7 @@ public class UsersManager {
 
     private static UsersManager instance;
     private FileManager fileManager;
-    private HashMap<String, String> users = new HashMap<>();
+    public HashMap<String, String> users = new HashMap<>();
 
     public static UsersManager getInstance() {
 
@@ -55,11 +55,16 @@ public class UsersManager {
         String str = "";
 
         try {
+
+            System.out.println("初始化数据");
             while ((str = reader.readLine()) != null) {
 
                 String[] data = str.split("=");
                 users.put(data[0], data[1]);
             }
+
+            System.out.println(str);
+
 
         } catch (IOException e) {
 
