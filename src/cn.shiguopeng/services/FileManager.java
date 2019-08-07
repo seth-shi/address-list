@@ -1,27 +1,20 @@
-package cn.shiguopeng;
+package cn.shiguopeng.services;
+
+import cn.shiguopeng.Main;
 
 import java.io.*;
 
 public class FileManager {
 
-    private static FileManager instance;
     private String rootPath;
 
     private BufferedWriter usersDataWriter;
     private BufferedReader usersDataReader;
 
-    public static FileManager getInstance() {
 
-        if (FileManager.instance == null) {
+    public FileManager(UsersManager usersManager) {
 
-            FileManager.instance = new FileManager(Main.class.getResource("/").getPath());
-        }
-
-        return FileManager.instance;
-    }
-
-    public FileManager(String rootPath) {
-
+        rootPath = Main.class.getResource("/").getPath();
         if (rootPath.endsWith("/")) {
 
             rootPath = rootPath.substring(0, rootPath.length() - 1);
@@ -34,7 +27,7 @@ public class FileManager {
     public void createDataPathAtEmpty() {
 
         File file = new File(this.rootPath.concat("/data"));
-        if (! file.exists()) {
+        if (!file.exists()) {
 
             file.mkdir();
         }
@@ -66,7 +59,7 @@ public class FileManager {
         if (this.usersDataReader == null) {
 
             File file = new File(this.getUsersDataPath());
-            if (! file.exists()) {
+            if (!file.exists()) {
 
                 try {
 

@@ -1,7 +1,6 @@
 package cn.shiguopeng.views;
 
-import cn.shiguopeng.Main;
-import cn.shiguopeng.UsersManager;
+import cn.shiguopeng.services.UsersManager;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -18,10 +17,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.io.*;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class Register extends Application {
 
@@ -87,7 +82,7 @@ public class Register extends Application {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
                 String confirmPassword = confirmPasswordInput.getText();
-                UsersManager usersManager = UsersManager.getInstance();
+                UsersManager usersManager = new UsersManager();
 
                 FadeTransition ft = new FadeTransition(Duration.millis(1000), welcomeTxt);
                 ft.setFromValue(0.1);

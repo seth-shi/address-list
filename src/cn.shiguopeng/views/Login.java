@@ -1,8 +1,7 @@
 package cn.shiguopeng.views;
 
-import cn.shiguopeng.UsersManager;
+import cn.shiguopeng.services.UsersManager;
 import javafx.animation.FadeTransition;
-import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,8 +18,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import java.util.function.BiConsumer;
 
 public class Login extends Application {
 
@@ -80,7 +77,7 @@ public class Login extends Application {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
 
-                UsersManager usersManager = UsersManager.getInstance();
+                UsersManager usersManager = new UsersManager();
 
                 FadeTransition ft = new FadeTransition(Duration.millis(1000), welcomeTxt);
                 ft.setFromValue(0.1);

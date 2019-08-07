@@ -1,15 +1,13 @@
-package cn.shiguopeng.modoules;
+package cn.shiguopeng.services;
 
-import cn.shiguopeng.Contracts.EncryptContract;
-
-import java.text.NumberFormat;
+import cn.shiguopeng.contracts.EncryptContract;
 
 final public class Encrypt implements EncryptContract {
 
     private String key = "I love you not because of who you are, but because of who I am when I am with you.";
-    private int keyLength;
+    private int keyLength = key.length();
 
-    public Encrypt() {
+    public Encrypt(FileManager fileManager) {
 
         keyLength = key.length();
     }
@@ -28,7 +26,7 @@ final public class Encrypt implements EncryptContract {
         // 容量即为加密字符串的两倍大小
         StringBuilder secretKey = new StringBuilder(plainLength * 2);
 
-        for (int i = 0; i < plainLength; ++ i, ++ keyOffset) {
+        for (int i = 0; i < plainLength; ++i, ++keyOffset) {
 
             if (keyOffset == keyLength) {
                 keyOffset = 0;
@@ -62,14 +60,14 @@ final public class Encrypt implements EncryptContract {
         int keyOffset = 0;
         int secretLength = secretKey.length();
 
-        if (secretLength%2 != 0) {
+        if (secretLength % 2 != 0) {
             throw new Exception("无效的秘钥");
         }
 
         // 容量即为加密字符串的两倍大小
         StringBuilder plaintext = new StringBuilder(secretLength / 2);
 
-        for (int i = 0; i < secretLength; i += 2, ++ keyOffset) {
+        for (int i = 0; i < secretLength; i += 2, ++keyOffset) {
 
             if (keyOffset == keyLength) {
                 keyOffset = 0;
@@ -87,7 +85,7 @@ final public class Encrypt implements EncryptContract {
             }
 
 
-            plaintext.append((char)sumAscII);
+            plaintext.append((char) sumAscII);
         }
 
         return plaintext.toString();

@@ -1,4 +1,4 @@
-package cn.shiguopeng.Contracts;
+package cn.shiguopeng.contracts;
 
 public interface EncryptContract {
 

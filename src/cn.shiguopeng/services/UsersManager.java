@@ -1,4 +1,4 @@
-package cn.shiguopeng;
+package cn.shiguopeng.services;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,19 +6,9 @@ import java.util.HashMap;
 
 public class UsersManager {
 
-    private static UsersManager instance;
     private FileManager fileManager;
     private HashMap<String, String> users = new HashMap<>();
 
-    public static UsersManager getInstance() {
-
-        if (UsersManager.instance == null) {
-
-            UsersManager.instance = new UsersManager(FileManager.getInstance());
-        }
-
-        return UsersManager.instance;
-    }
 
     public boolean has(String username) {
 
@@ -52,15 +42,6 @@ public class UsersManager {
         }
 
         return users.put(username, password);
-    }
-
-    /**
-     * 初始化读取所有用户数据进入系统
-     */
-    private UsersManager(FileManager fileManager) {
-
-        this.fileManager = fileManager;
-        initUsersData();
     }
 
     private void initUsersData() {
