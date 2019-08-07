@@ -8,7 +8,7 @@ public class UsersManager {
 
     private static UsersManager instance;
     private FileManager fileManager;
-    public HashMap<String, String> users = new HashMap<>();
+    private HashMap<String, String> users = new HashMap<>();
 
     public static UsersManager getInstance() {
 
@@ -20,24 +20,38 @@ public class UsersManager {
         return UsersManager.instance;
     }
 
-    public boolean has(String phone) {
+    public boolean has(String username) {
 
         if (users.isEmpty()) {
 
             return false;
         }
 
-        return users.containsKey(phone);
+        return users.containsKey(username);
     }
 
-    public String get(String phone) {
+    public String get(String username) {
 
         if (users.isEmpty()) {
 
             return "";
         }
 
-        return users.get(phone);
+        return users.get(username);
+    }
+
+    public String put(String username, String password) {
+
+        // 把数据持久化
+        try {
+            fileManager.getUsersWriter().newLine();
+            fileManager.getUsersWriter().write(username + "=" + password);
+            fileManager.getUsersWriter().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return users.put(username, password);
     }
 
     /**

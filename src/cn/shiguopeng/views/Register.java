@@ -1,6 +1,8 @@
 package cn.shiguopeng.views;
 
 import cn.shiguopeng.Main;
+import cn.shiguopeng.UsersManager;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,7 +15,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.util.Arrays;
@@ -31,6 +35,7 @@ public class Register extends Application {
         // stage.getIcons().add(new Image("file:/src/resources/icon.png"));
 
         // 用户名和密码
+        Text welcomeTxt = new Text("欢迎使用通讯录");
         Label usernameLabel = new Label("账号");
         Label passwordLabel = new Label("密码");
         Label confirmPasswordLabel = new Label("请重复密码");
@@ -41,14 +46,15 @@ public class Register extends Application {
         Button registerBtn = new Button("注册");
 
         GridPane gridpane = new GridPane();
-        gridpane.add(usernameLabel, 0 ,0);
-        gridpane.add(usernameInput, 1 ,0);
-        gridpane.add(passwordLabel, 0 ,1);
-        gridpane.add(passwordInput, 1 ,1);
-        gridpane.add(confirmPasswordLabel, 0 ,2);
-        gridpane.add(confirmPasswordInput, 1 ,2);
-        gridpane.add(loginLabel, 0 ,3);
-        gridpane.add(registerBtn, 1 ,3);
+        gridpane.add(welcomeTxt, 0 ,0);
+        gridpane.add(usernameLabel, 0 ,1);
+        gridpane.add(usernameInput, 1 ,1);
+        gridpane.add(passwordLabel, 0 ,2);
+        gridpane.add(passwordInput, 1 ,2);
+        gridpane.add(confirmPasswordLabel, 0 ,3);
+        gridpane.add(confirmPasswordInput, 1 ,3);
+        gridpane.add(loginLabel, 0 ,4);
+        gridpane.add(registerBtn, 1 ,4);
 
         gridpane.setAlignment(Pos.CENTER);
         GridPane.setHalignment(usernameLabel, HPos.RIGHT);
@@ -78,6 +84,36 @@ public class Register extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
 
+                String username = usernameInput.getText();
+                String password = passwordInput.getText();
+                String confirmPassword = confirmPasswordInput.getText();
+                UsersManager usersManager = UsersManager.getInstance();
+
+                FadeTransition ft = new FadeTransition(Duration.millis(1000), welcomeTxt);
+                ft.setFromValue(0.1);
+                ft.setToValue(1);
+                ft.play();
+
+                if (! password.equals(confirmPassword)) {
+
+                    welcomeTxt.setText("两次密码不一致");
+                    return;
+                }
+
+                if (usersManager.has(username)) {
+
+                    welcomeTxt.setText("用户名已经存在");
+                    return;
+                }
+
+                if (password.length() < 4) {
+
+                    welcomeTxt.setText("请把密码设置得复杂一点");
+                    return;
+                }
+
+                usersManager.put(username, password);
+                welcomeTxt.setText("注册成功,请去登录吧");
             }
         });
 

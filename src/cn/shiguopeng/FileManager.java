@@ -6,6 +6,8 @@ public class FileManager {
 
     private static FileManager instance;
     private String rootPath;
+
+    private BufferedWriter usersDataWriter;
     private BufferedReader usersDataReader;
 
     public static FileManager getInstance() {
@@ -36,6 +38,27 @@ public class FileManager {
 
             file.mkdir();
         }
+    }
+
+    public BufferedWriter getUsersWriter() {
+
+        if (usersDataWriter == null) {
+
+            File file = new File(this.getUsersDataPath());
+
+            try {
+
+                usersDataWriter = new BufferedWriter(
+                        new OutputStreamWriter(
+                                new FileOutputStream(file, true)
+                        )
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return usersDataWriter;
     }
 
     public BufferedReader getUsersReader() {
