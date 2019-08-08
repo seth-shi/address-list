@@ -97,7 +97,6 @@ public class RegisterController extends ControllerFactory {
 
                 usersManager.put(username, password);
                 alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.showAndWait();
                 alert.setContentText("注册成功,请去登录吧");
                 alert.showAndWait();
             }

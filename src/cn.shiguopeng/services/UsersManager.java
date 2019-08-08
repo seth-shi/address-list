@@ -1,6 +1,7 @@
 package cn.shiguopeng.services;
 
 import cn.shiguopeng.Application;
+import cn.shiguopeng.app.models.UserModel;
 import cn.shiguopeng.enums.StoreOptionEnum;
 
 import java.io.BufferedReader;
@@ -11,7 +12,7 @@ import java.util.logging.Logger;
 public class UsersManager {
 
     private FileManager fileManager;
-    private HashMap<String, String> users = new HashMap<>();
+    private HashMap<String, UserModel> users = new HashMap<>();
 
 
     public UsersManager(FileManager fileManager) {
@@ -35,14 +36,17 @@ public class UsersManager {
                 }
 
                 String[] data = str.split(StoreOptionEnum.SEPARATOR);
-                users.put(data[0], data[1]);
+                users.put(data[0], new UserModel(data[0], data[1]));
             }
-            Logger.getGlobal().info("读取用户资料完毕,总共["+ users.size() +"]个用户信息");
+            reader.close();
 
+            Logger.getGlobal().info("读取用户资料完毕,总共["+ users.size() +"]个用户信息");
         } catch (IOException e) {
 
             e.printStackTrace();
         }
+
+
     }
 
     public boolean has(String username) {
@@ -55,11 +59,11 @@ public class UsersManager {
         return users.containsKey(username);
     }
 
-    public String get(String username) {
+    public UserModel get(String username) {
 
         if (users.isEmpty()) {
 
-            return "";
+            return new UserModel("", "");
         }
 
         return users.get(username);
@@ -80,6 +84,6 @@ public class UsersManager {
             e.printStackTrace();
         }
 
-        users.put(username, password);
+        users.put(username, new UserModel(username, password));
     }
 }

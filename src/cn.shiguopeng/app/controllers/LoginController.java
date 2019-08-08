@@ -2,6 +2,7 @@ package cn.shiguopeng.app.controllers;
 
 import cn.shiguopeng.Foundtions.ControllerFactory;
 import cn.shiguopeng.Foundtions.ViewFactory;
+import cn.shiguopeng.app.models.UserModel;
 import cn.shiguopeng.app.views.LoginView;
 import cn.shiguopeng.app.views.RegisterView;
 import cn.shiguopeng.services.Encrypt;
@@ -52,7 +53,6 @@ public class LoginController extends ControllerFactory {
 
                 UsersManager usersManager = (UsersManager) cn.shiguopeng.Application.makeObject(UsersManager.class);
 
-
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 if (! usersManager.has(username)) {
 
@@ -61,10 +61,9 @@ public class LoginController extends ControllerFactory {
                     return;
                 }
 
-
                 // 密码加密解码
-                String dbPassword = ((Encrypt)cn.shiguopeng.Application.makeObject(Encrypt.class)).decrypt(usersManager.get(username));
-                if (dbPassword == null || ! dbPassword.equals(password)) {
+                UserModel model = usersManager.get(username);
+                if (! model.is(username, password)) {
 
                     alert.setContentText("密码错误");
                     alert.show();
@@ -72,7 +71,6 @@ public class LoginController extends ControllerFactory {
                 }
 
                 alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.showAndWait();
                 alert.setContentText("登录成功");
                 alert.showAndWait();
             }
