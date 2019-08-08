@@ -37,6 +37,7 @@ public class UsersManager {
                 String[] data = str.split(StoreOptionEnum.SEPARATOR);
                 users.put(data[0], data[1]);
             }
+            Logger.getGlobal().info("读取用户资料完毕,总共["+ users.size() +"]个用户信息");
 
         } catch (IOException e) {
 

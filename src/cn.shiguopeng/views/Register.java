@@ -1,5 +1,6 @@
 package cn.shiguopeng.views;
 
+import cn.shiguopeng.enums.StoreOptionEnum;
 import cn.shiguopeng.services.UsersManager;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
@@ -13,6 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -37,6 +40,8 @@ public class Register extends Application {
         PasswordField confirmPasswordInput = new PasswordField();
         Label loginLabel = new Label("已有账号,去登录");
         Button registerBtn = new Button("注册");
+
+
 
         GridPane gridpane = new GridPane();
         gridpane.add(welcomeTxt, 0 ,0);
@@ -102,6 +107,19 @@ public class Register extends Application {
                 if (password.length() < 4) {
 
                     welcomeTxt.setText("请把密码设置得复杂一点");
+                    return;
+                }
+
+                // 用户名和密码都不能包含 =
+                if (username.contains(StoreOptionEnum.SEPARATOR)) {
+
+                    welcomeTxt.setText("用户名不能包含" + StoreOptionEnum.SEPARATOR + "符号");
+                    return;
+                }
+
+                if (password.contains(StoreOptionEnum.SEPARATOR)) {
+
+                    welcomeTxt.setText("密码不能包含" + StoreOptionEnum.SEPARATOR + "符号");
                     return;
                 }
 
