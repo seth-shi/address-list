@@ -10,6 +10,18 @@ public class UsersManager {
     private HashMap<String, String> users = new HashMap<>();
 
 
+
+
+    public UsersManager(int str) {
+
+        System.out.println("参数构造" + str);
+    }
+
+    public UsersManager() {
+
+        System.out.println("构造出来");
+    }
+
     public boolean has(String username) {
 
         if (users.isEmpty()) {

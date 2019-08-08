@@ -42,39 +42,26 @@ public class Container implements ContainerContract {
 
         // 如果是 Java 基础类,不能实例化
         if (cls.getPackageName().equals("java.lang")) {
-            return new Object();
+
+            return null;
         }
 
-
+        // 如果已经实例化过了,那么知己返回
         if (instances.containsKey(cls.getName())) {
 
-            System.out.println("已有的实例");
             return instances.get(cls.getName());
         }
 
         Constructor[] constructors = cls.getConstructors();
 
-        if (constructors.length == 0) {
-
-            return new Object();
-        }
-
         for (Constructor constructor : constructors) {
 
             Class[] parameters = constructor.getParameterTypes();
 
+            // 如果构造函数不需要参数,那么直接实例化
             if (parameters.length == 0) {
 
-                Object newObj = null;
-                try {
-                    newObj = constructor.newInstance();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                Object newObj = createObject(constructor);
 
                 instances.put(newObj.getClass().getName(), newObj);
                 return newObj;
@@ -83,25 +70,60 @@ public class Container implements ContainerContract {
 
             // 构造函数
             Object[] relParameters = new Object[parameters.length];
+            boolean canCreate = true;
+
             for (int i = 0, l = parameters.length; i < l; ++ i) {
 
-                relParameters[i] = resolve(parameters[i]);
+                Object param = resolve(parameters[i]);
+                // 如果参数无法构造出来,那么跳过这个构造函数
+                if (param == null) {
+
+                    Logger.getGlobal().info("无法用此构造函数构造出" + cls.getName());
+                    canCreate = false;
+                    break;
+                }
+
+                relParameters[i] = param;
             }
 
-            Object newObj = null;
-            try {
-                newObj = constructor.newInstance(relParameters);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
+            if (canCreate) {
+
+                Object newObj = createObject(constructor, relParameters);
+                if (newObj == null) {
+
+                    return null;
+                }
+
+                instances.put(newObj.getClass().getName(), newObj);
+                return newObj;
             }
-            instances.put(newObj.getClass().getName(), newObj);
-            return newObj;
         }
 
-        return new Object();
+        // 如果没有构造函数,或者无法构造出来
+        return null;
+    }
+
+    private Object createObject(Constructor constructor, Object[] parameters) {
+
+        Object newObj = null;
+        try {
+
+            newObj = constructor.newInstance(parameters);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (newObj == null) {
+
+            return null;
+        }
+
+        return newObj;
+    }
+
+    private Object createObject(Constructor constructor) {
+
+        return createObject(constructor, new Object[]{});
     }
 }

@@ -77,7 +77,7 @@ public class Login extends Application {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
 
-                UsersManager usersManager = new UsersManager();
+                UsersManager usersManager = new UsersManager(1);
 
                 FadeTransition ft = new FadeTransition(Duration.millis(1000), welcomeTxt);
                 ft.setFromValue(0.1);

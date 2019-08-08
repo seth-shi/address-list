@@ -14,6 +14,7 @@ public class Main {
         Application application = Application.getInstance();
         Encrypt encrypt = (Encrypt) application.make(Encrypt.class);
 
+        System.out.println("-------------------------");
         System.out.println(encrypt);
         System.out.println(encrypt.encrypt("abcd"));
 
