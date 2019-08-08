@@ -27,8 +27,6 @@ public class Register extends Application {
         stage.setWidth(600);
         stage.setHeight(400);
 
-        // stage.getIcons().add(new Image("file:/src/resources/icon.png"));
-
         // 用户名和密码
         Text welcomeTxt = new Text("欢迎使用通讯录");
         Label usernameLabel = new Label("账号");
@@ -82,7 +80,7 @@ public class Register extends Application {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
                 String confirmPassword = confirmPasswordInput.getText();
-                UsersManager usersManager = new UsersManager(1);
+                UsersManager usersManager = (UsersManager) cn.shiguopeng.Application.makeObject(UsersManager.class);
 
                 FadeTransition ft = new FadeTransition(Duration.millis(1000), welcomeTxt);
                 ft.setFromValue(0.1);

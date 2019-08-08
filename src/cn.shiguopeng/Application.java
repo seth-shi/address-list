@@ -16,9 +16,8 @@ public class Application extends Container {
     private Application() {
     }
 
-    public HashMap<String, Object> getInstances() {
+    public static Object makeObject(Class cls) {
 
-        return instances;
+        return Application.getInstance().make(cls);
     }
-
 }

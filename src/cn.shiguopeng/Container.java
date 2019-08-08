@@ -32,7 +32,7 @@ public class Container implements ContainerContract {
         return newObj;
     }
 
-    public Object resolve(Class cls) {
+    private Object resolve(Class cls) {
 
         if (! stacks.add(cls.getName())) {
 

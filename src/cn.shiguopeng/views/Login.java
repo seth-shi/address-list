@@ -1,5 +1,6 @@
 package cn.shiguopeng.views;
 
+import cn.shiguopeng.services.Encrypt;
 import cn.shiguopeng.services.UsersManager;
 import javafx.animation.FadeTransition;
 import javafx.application.Application;
@@ -77,7 +78,7 @@ public class Login extends Application {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
 
-                UsersManager usersManager = new UsersManager(1);
+                UsersManager usersManager = (UsersManager) cn.shiguopeng.Application.makeObject(UsersManager.class);
 
                 FadeTransition ft = new FadeTransition(Duration.millis(1000), welcomeTxt);
                 ft.setFromValue(0.1);
@@ -91,8 +92,10 @@ public class Login extends Application {
                     return;
                 }
 
-                String dbPassword = usersManager.get(username);
-                if (! dbPassword.equals(password)) {
+
+                // 密码加密解码
+                String dbPassword = ((Encrypt)cn.shiguopeng.Application.makeObject(Encrypt.class)).decrypt(usersManager.get(username));
+                if (dbPassword == null || ! dbPassword.equals(password)) {
 
                     welcomeTxt.setText("密码错误");
                     return;

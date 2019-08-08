@@ -51,7 +51,7 @@ final public class Encrypt implements EncryptContract {
         return secretKey.toString();
     }
 
-    public String decrypt(String secretKey) throws Exception {
+    public String decrypt(String secretKey) {
 
         byte originAscII = -1;
         byte keyAscII = -1;
@@ -61,7 +61,7 @@ final public class Encrypt implements EncryptContract {
         int secretLength = secretKey.length();
 
         if (secretLength % 2 != 0) {
-            throw new Exception("无效的秘钥");
+            return null;
         }
 
         // 容量即为加密字符串的两倍大小

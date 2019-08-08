@@ -12,7 +12,7 @@ public class FileManager {
     private BufferedReader usersDataReader;
 
 
-    public FileManager(UsersManager usersManager) {
+    public FileManager() {
 
         rootPath = Main.class.getResource("/").getPath();
         if (rootPath.endsWith("/")) {
