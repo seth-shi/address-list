@@ -3,8 +3,10 @@ package cn.shiguopeng.app.controllers;
 import cn.shiguopeng.app.views.LoginView;
 import cn.shiguopeng.app.views.RegisterView;
 import cn.shiguopeng.contracts.ViewInterface;
+import cn.shiguopeng.enums.StoreOptionEnum;
 import cn.shiguopeng.services.Encrypt;
 import cn.shiguopeng.services.UsersManager;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -12,16 +14,17 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
-public class LoginController extends Application {
+public class RegisterController extends Application {
 
 
     private ViewInterface view;
     private Stage stage;
 
-    public LoginController() {
+    public RegisterController() {
 
-        this.view = new LoginView(this);
+        this.view = new RegisterView(this);
     }
 
     @Override
@@ -32,25 +35,27 @@ public class LoginController extends Application {
 
     }
 
-    public EventHandler<MouseEvent> gotoRegisterEvent() {
+    public EventHandler<MouseEvent> gotoLoginEvent() {
 
         return new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
 
-                // 跳转去注册页面
+                // 跳转去登录界面
                 try {
-                    new RegisterController().start(new Stage());
+
+                    new LoginController().start(new Stage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
                 // 关闭当前窗口
                 stage.close();
             }
         };
     }
 
-    public EventHandler<ActionEvent> loginEvent(TextField usernameInput, TextField passwordInput) {
+    public EventHandler<ActionEvent> registerEvent(TextField usernameInput, TextField passwordInput, TextField confirmPasswordInput) {
 
         return new EventHandler<ActionEvent>() {
             @Override
@@ -58,31 +63,51 @@ public class LoginController extends Application {
 
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
-
+                String confirmPassword = confirmPasswordInput.getText();
                 UsersManager usersManager = (UsersManager) cn.shiguopeng.Application.makeObject(UsersManager.class);
 
-
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                if (! usersManager.has(username)) {
+                if (! password.equals(confirmPassword)) {
 
-                    alert.setContentText("无效的用户名");
+                    alert.setContentText("两次密码不一致");
+                    alert.show();
+                    return;
+                }
+
+                if (usersManager.has(username)) {
+
+                    alert.setContentText("用户名已经存在");
+                    alert.show();
+                    return;
+                }
+
+                if (password.length() < 4) {
+
+                    alert.setContentText("请把密码设置得复杂一点");
+                    alert.show();
+                    return;
+                }
+
+                // 用户名和密码都不能包含 =
+                if (username.contains(StoreOptionEnum.SEPARATOR)) {
+
+                    alert.setContentText("用户名不能包含" + StoreOptionEnum.SEPARATOR + "符号");
+                    alert.show();
+                    return;
+                }
+
+                if (password.contains(StoreOptionEnum.SEPARATOR)) {
+
+                    alert.setContentText("密码不能包含" + StoreOptionEnum.SEPARATOR + "符号");
                     alert.show();
                     return;
                 }
 
 
-                // 密码加密解码
-                String dbPassword = ((Encrypt)cn.shiguopeng.Application.makeObject(Encrypt.class)).decrypt(usersManager.get(username));
-                if (dbPassword == null || ! dbPassword.equals(password)) {
-
-                    alert.setContentText("密码错误");
-                    alert.show();
-                    return;
-                }
-
+                usersManager.put(username, password);
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.showAndWait();
-                alert.setContentText("登录成功");
+                alert.setContentText("注册成功,请去登录吧");
                 alert.showAndWait();
             }
         };

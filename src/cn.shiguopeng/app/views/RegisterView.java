@@ -1,6 +1,6 @@
 package cn.shiguopeng.app.views;
 
-import cn.shiguopeng.app.controllers.LoginController;
+import cn.shiguopeng.app.controllers.RegisterController;
 import cn.shiguopeng.contracts.ViewInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,17 +13,21 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
-public class LoginView implements ViewInterface {
+public class RegisterView implements ViewInterface {
 
-    private LoginController controller;
+    private RegisterController controller;
 
-    public LoginView(LoginController controller) {
+    public RegisterView(RegisterController controller) {
 
         this.controller = controller;
     }
 
     @Override
-    public void make(Stage stage) {
+    public void make(Stage stage){
+
+        stage.setTitle("注册窗口");
+        stage.setWidth(600);
+        stage.setHeight(400);
 
         stage.getIcons().add(new Image("/resources/icon.png"));
         stage.setTitle("通讯录");
@@ -36,23 +40,27 @@ public class LoginView implements ViewInterface {
         // 用户名和密码
         Label usernameLabel = new Label("账号");
         Label passwordLabel = new Label("密码");
+        Label confirmPassword = new Label("重复密码");
 
         TextField usernameInput = new TextField();
         PasswordField passwordInput = new PasswordField();
+        PasswordField confirmPasswordInput = new PasswordField();
 
-        Label registerLabel = new Label("还没有账号,去注册");
-        registerLabel.getStyleClass().setAll("lbl", "lbl-default");
+        Label loginLabel = new Label("已经有账号了,去登录");
+        loginLabel.getStyleClass().setAll("lbl", "lbl-default");
 
-        Button loginBtn = new Button("登录");
-        loginBtn.getStyleClass().setAll("btn","btn-success");
+        Button registerButton = new Button("注册");
+        registerButton.getStyleClass().setAll("btn","btn-primary");
 
         GridPane gridpane = new GridPane();
         gridpane.add(usernameLabel, 0, 0);
         gridpane.add(usernameInput, 1 ,0);
         gridpane.add(passwordLabel, 0 ,1);
         gridpane.add(passwordInput, 1 ,1);
-        gridpane.add(loginBtn, 1, 2);
-        gridpane.add(registerLabel, 1, 3);
+        gridpane.add(confirmPassword, 0 ,2);
+        gridpane.add(confirmPasswordInput, 1 ,2);
+        gridpane.add(registerButton, 1, 3);
+        gridpane.add(loginLabel, 1, 4);
 
         gridpane.setVgap(20);
         gridpane.setHgap(20);
@@ -66,8 +74,8 @@ public class LoginView implements ViewInterface {
         stage.setScene(scene);
 
         // 点击注册
-        registerLabel.setOnMouseClicked(controller.gotoRegisterEvent());
-        loginBtn.setOnAction(controller.loginEvent(usernameInput, passwordInput));
+        loginLabel.setOnMouseClicked(controller.gotoLoginEvent());
+        registerButton.setOnAction(controller.registerEvent(usernameInput, passwordInput, confirmPasswordInput));
 
         stage.show();
     }
