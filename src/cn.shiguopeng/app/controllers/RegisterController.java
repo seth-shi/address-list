@@ -1,12 +1,9 @@
 package cn.shiguopeng.app.controllers;
 
-import cn.shiguopeng.app.views.LoginView;
+import cn.shiguopeng.Foundtions.ControllerFactory;
 import cn.shiguopeng.app.views.RegisterView;
-import cn.shiguopeng.contracts.ViewInterface;
 import cn.shiguopeng.enums.StoreOptionEnum;
-import cn.shiguopeng.services.Encrypt;
 import cn.shiguopeng.services.UsersManager;
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,24 +11,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-public class RegisterController extends Application {
+public class RegisterController extends ControllerFactory {
 
-
-    private ViewInterface view;
     private Stage stage;
 
-    public RegisterController() {
-
-        this.view = new RegisterView(this);
-    }
 
     @Override
     public void start(Stage stage) throws Exception {
 
+        new RegisterView(stage, this);
+
         this.stage = stage;
-        this.view.make(this.stage);
 
     }
 

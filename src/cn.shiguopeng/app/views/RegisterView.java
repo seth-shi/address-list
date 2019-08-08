@@ -1,7 +1,9 @@
 package cn.shiguopeng.app.views;
 
+import cn.shiguopeng.Foundtions.ControllerFactory;
+import cn.shiguopeng.Foundtions.ViewFactory;
 import cn.shiguopeng.app.controllers.RegisterController;
-import cn.shiguopeng.contracts.ViewInterface;
+import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,21 +15,19 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
-public class RegisterView implements ViewInterface {
+public class RegisterView extends ViewFactory {
 
     private RegisterController controller;
 
-    public RegisterView(RegisterController controller) {
+    public RegisterView(Stage stage, ControllerFactory controllerFactory) {
+        super(stage, controllerFactory);
 
-        this.controller = controller;
+        this.controller = (RegisterController) controllerFactory;
     }
 
     @Override
-    public void make(Stage stage){
+    public void make() {
 
-        stage.setTitle("注册窗口");
-        stage.setWidth(600);
-        stage.setHeight(400);
 
         stage.getIcons().add(new Image("/resources/icon.png"));
         stage.setTitle("通讯录");
@@ -50,15 +50,15 @@ public class RegisterView implements ViewInterface {
         loginLabel.getStyleClass().setAll("lbl", "lbl-default");
 
         Button registerButton = new Button("注册");
-        registerButton.getStyleClass().setAll("btn","btn-primary");
+        registerButton.getStyleClass().setAll("btn", "btn-primary");
 
         GridPane gridpane = new GridPane();
         gridpane.add(usernameLabel, 0, 0);
-        gridpane.add(usernameInput, 1 ,0);
-        gridpane.add(passwordLabel, 0 ,1);
-        gridpane.add(passwordInput, 1 ,1);
-        gridpane.add(confirmPassword, 0 ,2);
-        gridpane.add(confirmPasswordInput, 1 ,2);
+        gridpane.add(usernameInput, 1, 0);
+        gridpane.add(passwordLabel, 0, 1);
+        gridpane.add(passwordInput, 1, 1);
+        gridpane.add(confirmPassword, 0, 2);
+        gridpane.add(confirmPasswordInput, 1, 2);
         gridpane.add(registerButton, 1, 3);
         gridpane.add(loginLabel, 1, 4);
 

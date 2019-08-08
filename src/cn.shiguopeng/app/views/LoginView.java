@@ -1,7 +1,8 @@
 package cn.shiguopeng.app.views;
 
+import cn.shiguopeng.Foundtions.ControllerFactory;
+import cn.shiguopeng.Foundtions.ViewFactory;
 import cn.shiguopeng.app.controllers.LoginController;
-import cn.shiguopeng.contracts.ViewInterface;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,17 +14,17 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
-public class LoginView implements ViewInterface {
+public class LoginView extends ViewFactory {
 
-    private LoginController controller;
+    protected LoginController controller;
 
-    public LoginView(LoginController controller) {
+    public LoginView(Stage stage, ControllerFactory controllerFactory) {
 
-        this.controller = controller;
+        super(stage, controllerFactory);
     }
 
-    @Override
-    public void make(Stage stage) {
+
+    public void make() {
 
         stage.getIcons().add(new Image("/resources/icon.png"));
         stage.setTitle("通讯录");
@@ -69,6 +70,7 @@ public class LoginView implements ViewInterface {
         registerLabel.setOnMouseClicked(controller.gotoRegisterEvent());
         loginBtn.setOnAction(controller.loginEvent(usernameInput, passwordInput));
 
+        System.out.println("show");
         stage.show();
     }
 }

@@ -1,11 +1,11 @@
 package cn.shiguopeng.app.controllers;
 
+import cn.shiguopeng.Foundtions.ControllerFactory;
+import cn.shiguopeng.Foundtions.ViewFactory;
 import cn.shiguopeng.app.views.LoginView;
 import cn.shiguopeng.app.views.RegisterView;
-import cn.shiguopeng.contracts.ViewInterface;
 import cn.shiguopeng.services.Encrypt;
 import cn.shiguopeng.services.UsersManager;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -13,23 +13,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class LoginController extends Application {
+public class LoginController extends ControllerFactory {
 
-
-    private ViewInterface view;
-    private Stage stage;
-
-    public LoginController() {
-
-        this.view = new LoginView(this);
-    }
+    protected LoginView view;
 
     @Override
     public void start(Stage stage) throws Exception {
 
-        this.stage = stage;
-        this.view.make(this.stage);
-
+        super.start(stage);
     }
 
     public EventHandler<MouseEvent> gotoRegisterEvent() {
