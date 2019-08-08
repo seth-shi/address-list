@@ -1,6 +1,6 @@
 package cn.shiguopeng.contracts;
 
-public interface EncryptContract {
+public interface EncryptInterface {
 
     public String encrypt(String plaintext);
 

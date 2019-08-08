@@ -1,12 +1,12 @@
 package cn.shiguopeng;
 
-import cn.shiguopeng.views.Login;
+import cn.shiguopeng.app.controllers.LoginController;
 
 public class Main {
 
 
     public static void main(String[] args) throws Exception {
 
-        javafx.application.Application.launch(Login.class, args);
+        javafx.application.Application.launch(LoginController.class, args);
     }
 }

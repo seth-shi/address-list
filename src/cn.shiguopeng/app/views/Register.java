@@ -1,5 +1,6 @@
-package cn.shiguopeng.views;
+package cn.shiguopeng.app.views;
 
+import cn.shiguopeng.app.controllers.LoginController;
 import cn.shiguopeng.enums.StoreOptionEnum;
 import cn.shiguopeng.services.UsersManager;
 import javafx.animation.FadeTransition;
@@ -14,8 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -69,7 +68,8 @@ public class Register extends Application {
 
                 // 跳转去登录界面
                 try {
-                    new Login().start(new Stage());
+
+                    new LoginController().start(new Stage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

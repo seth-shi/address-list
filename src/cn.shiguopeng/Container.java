@@ -1,14 +1,12 @@
 package cn.shiguopeng;
 
-import cn.shiguopeng.contracts.ContainerContract;
+import cn.shiguopeng.contracts.ContainerInterface;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Logger;
 
-public class Container implements ContainerContract {
+public class Container implements ContainerInterface {
 
     protected HashMap<String, Object> instances = new HashMap<>();
     private HashSet<String> stacks = new HashSet<>();
