@@ -39,4 +39,6 @@ public class UserModel extends ModelFactory {
 
         return this.username.equals(username) && this.password.equals(password);
     }
+
+
 }
