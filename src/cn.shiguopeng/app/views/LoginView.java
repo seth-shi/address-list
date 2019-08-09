@@ -1,8 +1,8 @@
 package cn.shiguopeng.app.views;
 
-import cn.shiguopeng.Foundtions.ControllerFactory;
-import cn.shiguopeng.Foundtions.ViewFactory;
 import cn.shiguopeng.app.controllers.LoginController;
+import cn.shiguopeng.foundtions.ControllerFactory;
+import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,7 +16,7 @@ import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 public class LoginView extends ViewFactory {
 
-    protected LoginController controller;
+    private LoginController controller;
 
     public LoginView(Stage stage, ControllerFactory controllerFactory) {
 

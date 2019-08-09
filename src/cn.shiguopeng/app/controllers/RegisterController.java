@@ -1,10 +1,9 @@
 package cn.shiguopeng.app.controllers;
 
-import cn.shiguopeng.Foundtions.ControllerFactory;
+import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.app.views.RegisterView;
 import cn.shiguopeng.enums.StoreOptionEnum;
 import cn.shiguopeng.services.UsersManager;
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;

@@ -1,13 +1,11 @@
-package cn.shiguopeng.Foundtions;
+package cn.shiguopeng.foundtions;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-import javax.swing.plaf.nimbus.State;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 public abstract class ControllerFactory extends Application {
@@ -24,8 +22,8 @@ public abstract class ControllerFactory extends Application {
 
             // 实例化视图类
             Field viewField = this.getClass().getDeclaredField("view");
-            Constructor constructor = viewField.getType().getConstructor(Stage.class, ControllerFactory.class);
-            constructor.newInstance(stage, this);
+            Constructor viewCon = viewField.getType().getConstructor(Stage.class, ControllerFactory.class);
+            viewCon.newInstance(stage, this);
 
         } catch (NoSuchFieldException e) {
 

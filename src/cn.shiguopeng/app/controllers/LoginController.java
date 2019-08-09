@@ -1,11 +1,8 @@
 package cn.shiguopeng.app.controllers;
 
-import cn.shiguopeng.Foundtions.ControllerFactory;
-import cn.shiguopeng.Foundtions.ViewFactory;
+import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.app.models.UserModel;
 import cn.shiguopeng.app.views.LoginView;
-import cn.shiguopeng.app.views.RegisterView;
-import cn.shiguopeng.services.Encrypt;
 import cn.shiguopeng.services.UsersManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

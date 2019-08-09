@@ -1,7 +1,7 @@
 package cn.shiguopeng.app.models;
 
 import cn.shiguopeng.Application;
-import cn.shiguopeng.Foundtions.ModelFactory;
+import cn.shiguopeng.foundtions.ModelFactory;
 import cn.shiguopeng.services.Encrypt;
 
 public class UserModel extends ModelFactory {
@@ -9,11 +9,6 @@ public class UserModel extends ModelFactory {
     private String username;
     private String password;
 
-    public UserModel(String username, String password) {
-
-        this.username = username;
-        this.password = password;
-    }
 
     public String getUsername() {
         return username;
@@ -39,6 +34,4 @@ public class UserModel extends ModelFactory {
 
         return this.username.equals(username) && this.password.equals(password);
     }
-
-
 }

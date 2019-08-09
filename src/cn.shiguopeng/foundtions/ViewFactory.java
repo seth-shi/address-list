@@ -1,6 +1,5 @@
-package cn.shiguopeng.Foundtions;
+package cn.shiguopeng.foundtions;
 
-import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.lang.reflect.Field;
@@ -8,7 +7,6 @@ import java.util.logging.Logger;
 
 public abstract class ViewFactory {
 
-    protected ControllerFactory controller;
     protected Stage stage;
 
     public ViewFactory(Stage stage, ControllerFactory controllerFactory) {
@@ -22,6 +20,7 @@ public abstract class ViewFactory {
 
         try {
 
+            // 构造控制器
             Field controllerField = this.getClass().getDeclaredField("controller");
             controllerField.setAccessible(true);
             controllerField.set(this, controllerFactory);

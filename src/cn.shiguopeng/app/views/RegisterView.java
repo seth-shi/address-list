@@ -1,9 +1,8 @@
 package cn.shiguopeng.app.views;
 
-import cn.shiguopeng.Foundtions.ControllerFactory;
-import cn.shiguopeng.Foundtions.ViewFactory;
+import cn.shiguopeng.foundtions.ControllerFactory;
+import cn.shiguopeng.foundtions.ViewFactory;
 import cn.shiguopeng.app.controllers.RegisterController;
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
