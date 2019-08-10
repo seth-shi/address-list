@@ -11,10 +11,12 @@ import java.util.logging.Logger;
 
 public abstract class ModelFactory {
 
+    private long offset;
     private String dataFilePath;
     private File dataFile;
 
     public ModelFactory() {
+
 
 //        try {
 //

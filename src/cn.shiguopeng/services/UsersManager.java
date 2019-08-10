@@ -36,7 +36,7 @@ public class UsersManager {
                 }
 
                 String[] data = str.split(StoreOptionEnum.SEPARATOR);
-                users.put(data[0], new UserModel(data[0], data[1]));
+                users.put(data[0], new UserModel());
             }
             reader.close();
 
@@ -63,7 +63,7 @@ public class UsersManager {
 
         if (users.isEmpty()) {
 
-            return new UserModel("", "");
+            return new UserModel();
         }
 
         return users.get(username);
@@ -84,6 +84,6 @@ public class UsersManager {
             e.printStackTrace();
         }
 
-        users.put(username, new UserModel(username, password));
+        users.put(username, new UserModel());
     }
 }
