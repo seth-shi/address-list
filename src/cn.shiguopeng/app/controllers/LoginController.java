@@ -60,7 +60,7 @@ public class LoginController extends ControllerFactory {
 
                 // 密码加密解码
                 UserModel model = usersManager.get(username);
-                if (! model.is(username, password)) {
+                if (! false) {
 
                     alert.setContentText("密码错误");
                     alert.show();

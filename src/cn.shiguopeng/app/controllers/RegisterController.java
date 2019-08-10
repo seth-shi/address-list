@@ -79,14 +79,14 @@ public class RegisterController extends ControllerFactory {
                 }
 
                 // 用户名和密码都不能包含 =
-                if (username.contains(StoreOptionEnum.SEPARATOR)) {
+                if (username.contains(String.valueOf(StoreOptionEnum.SEPARATOR))) {
 
                     alert.setContentText("用户名不能包含" + StoreOptionEnum.SEPARATOR + "符号");
                     alert.show();
                     return;
                 }
 
-                if (password.contains(StoreOptionEnum.SEPARATOR)) {
+                if (password.contains(String.valueOf(StoreOptionEnum.SEPARATOR))) {
 
                     alert.setContentText("密码不能包含" + StoreOptionEnum.SEPARATOR + "符号");
                     alert.show();

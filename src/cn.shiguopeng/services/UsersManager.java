@@ -24,19 +24,23 @@ public class UsersManager {
     private void initUsersData() {
 
         BufferedReader reader = fileManager.getUsersReader();
-        String str = "";
+        String line = "";
 
         try {
 
             Logger.getGlobal().info("开始读取用户资料库");
-            while ((str = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
 
-                if (str.trim().isEmpty()) {
+                if (line.trim().isEmpty()) {
                     continue;
                 }
 
-                String[] data = str.split(StoreOptionEnum.SEPARATOR);
-                users.put(data[0], new UserModel());
+                // 根据大小读取
+                UserModel user = new UserModel();
+                int usernameSize = user.getUsername().getSize();
+
+                user.getUsername().setValue(line.substring(0, usernameSize));
+                user.getPassword().setValue(line.substring(usernameSize));
             }
             reader.close();
 

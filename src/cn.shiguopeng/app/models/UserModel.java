@@ -1,64 +1,31 @@
 package cn.shiguopeng.app.models;
 
-import cn.shiguopeng.Application;
 import cn.shiguopeng.Main;
 import cn.shiguopeng.contracts.ModelInterface;
 import cn.shiguopeng.enums.StoreOptionEnum;
-import cn.shiguopeng.services.Encrypt;
-
-import java.util.Optional;
+import cn.shiguopeng.base.Field;
 
 public class UserModel implements ModelInterface {
 
-    private String username;
-    private String password;
-    private int dataSize;
-    private long dataOffset;
+    private Field username = new Field(StoreOptionEnum.BYTE_SIZE * 8);
+    private Field password = new Field(StoreOptionEnum.BYTE_SIZE * 32);
 
     public UserModel() {
 
     }
 
-    public UserModel(String username, String password, long dataOffset) {
+    public UserModel(String username, String password) {
 
-        this.username = username;
-        this.password = password;
-        this.dataOffset = dataOffset;
-
-        this.dataSize = username.length() + StoreOptionEnum.SEPARATOR.length() + password.length() + System.lineSeparator().length();
+        this.username.setValue(username);
+        this.password.setValue(password);
     }
 
-    public String getUsername() {
+    public Field getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-
-        return ((Encrypt) Application.makeObject(Encrypt.class)).decrypt(password);
-    }
-
-    public void setPassword(String password) {
-
-        this.password = ((Encrypt) Application.makeObject(Encrypt.class)).encrypt(password);
-    }
-
-    public boolean is(String username, String password) {
-
-        password = ((Encrypt) Application.makeObject(Encrypt.class)).encrypt(password);
-
-        return this.username.equals(username) && this.password.equals(password);
-    }
-
-    public int getDataSize() {
-        return dataSize;
-    }
-
-    public long getDataOffset() {
-        return dataOffset;
+    public Field getPassword() {
+        return password;
     }
 
     @Override
@@ -69,6 +36,7 @@ public class UserModel implements ModelInterface {
 
     @Override
     public String toDataString() {
-        return username + StoreOptionEnum.SEPARATOR + password;
+
+        return username.toString() + password.toString();
     }
 }

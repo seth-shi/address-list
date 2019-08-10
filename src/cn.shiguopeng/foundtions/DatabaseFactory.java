@@ -55,38 +55,38 @@ public class DatabaseFactory{
     
     public boolean delete(ModelInterface model) {
 
-        // 先拿到 offset
-        try {
-
-            RandomAccessFile pf = new RandomAccessFile(model.getDataFile(), "rw");
-
-            String line = "";
-
-            long oldOffset = model.getDataOffset();
-            long newOffset = model.getDataOffset() + model.getDataOffset();
-
-            pf.seek(newOffset);
-            // 把新的文件内容设置到新文件
-            while ((line = pf.readLine()) != null) {
-
-                // 先拿到当前偏移量
-                newOffset = pf.getFilePointer();
-
-                // 往之前的文件插入新的内容覆盖
-                pf.seek(oldOffset);
-                pf.write(line.getBytes());
-
-                System.out.println("旧指针=" + oldOffset + "  新指针="+newOffset + "  内容=" + line);
-                // 然后再切换到新指针
-                oldOffset = newOffset;
-                pf.seek(newOffset);
-            }
-
-            pf.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        // 先拿到 offset
+//        try {
+//
+//            RandomAccessFile pf = new RandomAccessFile(model.getDataFile(), "rw");
+//
+//            String line = "";
+//
+//            long oldOffset = model.getDataOffset();
+//            long newOffset = model.getDataOffset() + model.getDataOffset();
+//
+//            pf.seek(newOffset);
+//            // 把新的文件内容设置到新文件
+//            while ((line = pf.readLine()) != null) {
+//
+//                // 先拿到当前偏移量
+//                newOffset = pf.getFilePointer();
+//
+//                // 往之前的文件插入新的内容覆盖
+//                pf.seek(oldOffset);
+//                pf.write(line.getBytes());
+//
+//                System.out.println("旧指针=" + oldOffset + "  新指针="+newOffset + "  内容=" + line);
+//                // 然后再切换到新指针
+//                oldOffset = newOffset;
+//                pf.seek(newOffset);
+//            }
+//
+//            pf.close();
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
 
         return false;

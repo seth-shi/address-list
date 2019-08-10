@@ -18,10 +18,10 @@ public class Main {
         DatabaseFactory db = new DatabaseFactory();
 
         // System.out.println(new UserModel().getDataFile());
-        UserModel userModel = new UserModel("david", "7a5320212817086a63", 5);
+        UserModel userModel = new UserModel("david", "7a5320212817086a63");
 
-        // db.create(userModel);
-        db.delete(userModel);
+        db.create(userModel);
+        // db.delete(userModel);
 
 //        RandomAccessFile pf = new RandomAccessFile(Main.class.getResource("/").getPath() + "file.dat", "rw");
 //        pf.seek(5);
