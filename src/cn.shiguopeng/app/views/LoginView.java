@@ -26,11 +26,6 @@ public class LoginView extends ViewFactory {
 
     public void make() {
 
-        stage.getIcons().add(new Image("/resources/icon.png"));
-        stage.setTitle("通讯录");
-        stage.setWidth(600);
-        stage.setHeight(400);
-
         Panel panel = new Panel("欢迎使用通讯录");
         panel.getStyleClass().add("panel-info");
 
@@ -63,7 +58,7 @@ public class LoginView extends ViewFactory {
         panel.setBody(gridpane);
 
         Scene scene = new Scene(panel, 100, 20);
-        scene.getStylesheets().add("/css/bootstrapfx.css");
+        scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
         stage.setScene(scene);
 
         // 点击注册

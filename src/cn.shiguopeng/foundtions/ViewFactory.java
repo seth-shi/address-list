@@ -1,5 +1,6 @@
 package cn.shiguopeng.foundtions;
 
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.lang.reflect.Field;
@@ -12,7 +13,8 @@ public abstract class ViewFactory {
     public ViewFactory(Stage stage, ControllerFactory controllerFactory) {
 
         // 全局设置
-        stage.setTitle("注册窗口");
+        stage.getIcons().add(new Image("/resources/icon.png"));
+        stage.setTitle("通讯录");
         stage.setWidth(600);
         stage.setHeight(400);
 
