@@ -1,7 +1,7 @@
 package cn.shiguopeng.foundtions;
 
 import cn.shiguopeng.Main;
-import cn.shiguopeng.contracts.ModelInterface;
+import cn.shiguopeng.contracts.Model;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public class DatabaseFactory{
 
     private RandomAccessFile pf;
-    private ModelInterface model;
+    private Model model;
 
 
-    public boolean create(ModelInterface model) {
+    public boolean create(Model model) {
 
         String filePath = model.getDataFile();
 
@@ -53,7 +53,7 @@ public class DatabaseFactory{
         return true;
     }
     
-    public boolean delete(ModelInterface model) {
+    public boolean delete(Model model) {
 
 //        // 先拿到 offset
 //        try {
@@ -93,12 +93,12 @@ public class DatabaseFactory{
     }
 
     
-    public boolean update(ModelInterface model) {
+    public boolean update(Model model) {
         return false;
     }
 
     
-    public ModelInterface first() {
+    public Model first() {
         return null;
     }
 

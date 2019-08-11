@@ -1,23 +1,22 @@
 package cn.shiguopeng;
 
-import cn.shiguopeng.contracts.ContainerInterface;
-
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.logging.Logger;
 
-public class Container implements ContainerInterface {
+public class Container {
 
     protected HashMap<String, Object> instances = new HashMap<>();
     private HashSet<String> stacks = new HashSet<>();
 
-    @Override
+
     public void register(Object object) {
 
         instances.put(object.getClass().getName(), object);
     }
 
-    @Override
+
     public Object make(Class cls) {
 
         // 栈，防止重复调用

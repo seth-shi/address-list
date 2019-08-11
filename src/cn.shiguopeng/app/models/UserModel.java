@@ -1,11 +1,10 @@
 package cn.shiguopeng.app.models;
 
 import cn.shiguopeng.Main;
-import cn.shiguopeng.contracts.ModelInterface;
-import cn.shiguopeng.enums.StoreOptionEnum;
 import cn.shiguopeng.base.Field;
+import cn.shiguopeng.enums.StoreOptionEnum;
 
-public class UserModel implements ModelInterface {
+public class UserModel {
 
     private Field username = new Field(StoreOptionEnum.BYTE_SIZE * 8);
     private Field password = new Field(StoreOptionEnum.BYTE_SIZE * 32);
@@ -28,13 +27,11 @@ public class UserModel implements ModelInterface {
         return password;
     }
 
-    @Override
     public String getDataFile() {
 
         return Main.class.getResource("/").getPath() + "/data/users.dat";
     }
 
-    @Override
     public String toDataString() {
 
         return username.toString() + password.toString();

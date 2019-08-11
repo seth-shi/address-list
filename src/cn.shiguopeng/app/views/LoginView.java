@@ -16,15 +16,10 @@ import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 public class LoginView extends ViewFactory {
 
-    private LoginController controller;
+    @Override
+    public void render() {
 
-    public LoginView(Stage stage, ControllerFactory controllerFactory) {
-
-        super(stage, controllerFactory);
-    }
-
-
-    public void make() {
+        super.render();
 
         Panel panel = new Panel("欢迎使用通讯录");
         panel.getStyleClass().add("panel-info");
@@ -61,11 +56,13 @@ public class LoginView extends ViewFactory {
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
         stage.setScene(scene);
 
+
+        LoginController controller = (LoginController) this.controller;
+
         // 点击注册
         registerLabel.setOnMouseClicked(controller.gotoRegisterEvent());
         loginBtn.setOnAction(controller.loginEvent(usernameInput, passwordInput));
 
-        System.out.println("show");
         stage.show();
     }
 }

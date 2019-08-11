@@ -1,5 +1,6 @@
 package cn.shiguopeng.app.controllers;
 
+import cn.shiguopeng.contracts.View;
 import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.app.models.UserModel;
 import cn.shiguopeng.app.views.LoginView;
@@ -13,13 +14,13 @@ import javafx.stage.Stage;
 
 public class LoginController extends ControllerFactory {
 
-    protected LoginView view;
 
     @Override
     public void start(Stage stage) throws Exception {
 
-        super.start(stage);
+        renderView(stage);
     }
+
 
     public EventHandler<MouseEvent> gotoRegisterEvent() {
 
@@ -72,5 +73,11 @@ public class LoginController extends ControllerFactory {
                 alert.showAndWait();
             }
         };
+    }
+
+    @Override
+    public View makeView() {
+
+        return new LoginView();
     }
 }

@@ -1,5 +1,6 @@
 package cn.shiguopeng.app.controllers;
 
+import cn.shiguopeng.contracts.View;
 import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.app.views.RegisterView;
 import cn.shiguopeng.enums.StoreOptionEnum;
@@ -19,10 +20,7 @@ public class RegisterController extends ControllerFactory {
     @Override
     public void start(Stage stage) throws Exception {
 
-        new RegisterView(stage, this);
-
-        this.stage = stage;
-
+        renderView(stage);
     }
 
     public EventHandler<MouseEvent> gotoLoginEvent() {
@@ -100,5 +98,11 @@ public class RegisterController extends ControllerFactory {
                 alert.showAndWait();
             }
         };
+    }
+
+    @Override
+    public View makeView() {
+
+        return new RegisterView();
     }
 }

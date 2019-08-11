@@ -1,5 +1,6 @@
 package cn.shiguopeng.app.views;
 
+import cn.shiguopeng.app.controllers.LoginController;
 import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.foundtions.ViewFactory;
 import cn.shiguopeng.app.controllers.RegisterController;
@@ -16,16 +17,14 @@ import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 public class RegisterView extends ViewFactory {
 
-    private RegisterController controller;
 
-    public RegisterView(Stage stage, ControllerFactory controllerFactory) {
-        super(stage, controllerFactory);
 
-        this.controller = (RegisterController) controllerFactory;
-    }
+
 
     @Override
-    public void make() {
+    public void render() {
+
+        super.render();
 
         Panel panel = new Panel("欢迎使用通讯录");
         panel.getStyleClass().add("panel-info");
@@ -66,6 +65,7 @@ public class RegisterView extends ViewFactory {
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
         stage.setScene(scene);
 
+        RegisterController controller = (RegisterController) this.controller;
         // 点击注册
         loginLabel.setOnMouseClicked(controller.gotoLoginEvent());
         registerButton.setOnAction(controller.registerEvent(usernameInput, passwordInput, confirmPasswordInput));

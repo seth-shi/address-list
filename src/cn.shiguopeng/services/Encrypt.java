@@ -1,8 +1,6 @@
 package cn.shiguopeng.services;
 
-import cn.shiguopeng.contracts.EncryptInterface;
-
-final public class Encrypt implements EncryptInterface {
+final public class Encrypt {
 
     private String key = "I love you not because of who you are, but because of who I am when I am with you.";
     private int keyLength = key.length();

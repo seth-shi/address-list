@@ -1,6 +1,6 @@
 package cn.shiguopeng.contracts;
 
-public interface ModelInterface {
+public interface Model {
 
     String getDataFile();
     String toDataString();
