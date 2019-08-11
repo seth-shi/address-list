@@ -26,36 +26,29 @@ public class UserModel extends ModelFactory {
         fields.get("username").setValue(username);
     }
 
+
     public UserModel(String username, String password) {
-
-        this(username, password, false);
-    }
-
-    public UserModel(String username, String password, boolean needEncrypt) {
 
         this();
 
         fields.get("username").setValue(username);
 
-        if (needEncrypt) {
+        try {
 
-            try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            //对字符串进行加密
+            md.update(password.getBytes());
+            //获得加密后的数据
+            password = new BigInteger(1, md.digest()).toString(16);
 
-                MessageDigest md = MessageDigest.getInstance("MD5");
-                //对字符串进行加密
-                md.update(password.getBytes());
-                //获得加密后的数据
-                password = new BigInteger(1, md.digest()).toString(16);
+            int passwordSize = this.fields.get("password").getSize();
+            if (password.length() < passwordSize) {
 
-                int passwordSize = this.fields.get("password").getSize();
-                if (password.length() < passwordSize) {
-
-                    password = "0".repeat(password.length() - passwordSize) + password;
-                }
-
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+                password = "0".repeat(password.length() - passwordSize) + password;
             }
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
 
         fields.get("password").setValue(password);
@@ -67,25 +60,6 @@ public class UserModel extends ModelFactory {
         return new UserModel();
     }
 
-    public String getUsername() {
-        
-        if (! fields.containsKey("username")) {
-
-            return null;
-        }
-
-        return fields.get("username").getValue();
-    }
-
-    public String getPassword() {
-
-        if (! fields.containsKey("password")) {
-
-            return null;
-        }
-
-        return fields.get("password").getValue();
-    }
 
     @Override
     public boolean whereIs(Model model) {
@@ -98,6 +72,23 @@ public class UserModel extends ModelFactory {
         }
 
         return field.getValue().equals(fields.get("username").getValue());
+    }
+
+    @Override
+    public boolean is(Model model) {
+
+        Field usernameField = model.getFields().get("username");
+        Field passwordField = model.getFields().get("password");
+
+        if (usernameField == null || passwordField == null) {
+
+            return false;
+        }
+
+        System.out.println("密码=" + fields.get("password").getValue() + " "+fields.get("password").getValue().length());
+        System.out.println("密码=" + passwordField.getValue() + "  leng="+passwordField.getValue().length());
+        return usernameField.getValue().equals(fields.get("username").getValue()) &&
+                passwordField.getValue().equals(fields.get("password").getValue());
     }
 
     public String getDataFile() {

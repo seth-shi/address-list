@@ -13,6 +13,7 @@ public interface Model {
 
 
     boolean whereIs(Model model);
+    boolean is(Model model);
 
     HashMap<String, Field> getFields();
     String[] getIndexFields();

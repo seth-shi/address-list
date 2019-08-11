@@ -215,13 +215,14 @@ public class FileDrive implements DataDrive {
                 String line = new String(charBuffer);
 
 
+                System.out.println(line);
                 int offset = 0;
                 for (String key : indexFields) {
 
                     Field field = fields.get(key);
 
                     int size = field.getSize();
-                    field.setValue(line.substring(offset, size));
+                    field.setValue(line.substring(offset, size+offset));
                     offset += size;
 
                     newModel.setField(key, field);

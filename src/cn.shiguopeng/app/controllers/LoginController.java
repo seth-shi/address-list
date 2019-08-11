@@ -1,5 +1,6 @@
 package cn.shiguopeng.app.controllers;
 
+import cn.shiguopeng.app.models.UserModel;
 import cn.shiguopeng.app.views.LoginView;
 import cn.shiguopeng.contracts.View;
 import cn.shiguopeng.foundtions.ControllerFactory;
@@ -47,23 +48,25 @@ public class LoginController extends ControllerFactory {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
 
+                UserModel inputUser = new UserModel(username, password);
 
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-//                if (! usersManager.has(username)) {
-//
-//                    alert.setContentText("无效的用户名");
-//                    alert.show();
-//                    return;
-//                }
-//
-//                // 密码加密解码
-//                UserModel model = usersManager.get(username);
-//                if (! false) {
-//
-//                    alert.setContentText("密码错误");
-//                    alert.show();
-//                    return;
-//                }
+
+                UserModel dbUser = (UserModel) inputUser.first();
+                if (dbUser == null) {
+
+                    alert.setContentText("无效的用户名");
+                    alert.show();
+                    return;
+                }
+
+                // 密码加密解码
+                if (! dbUser.is(inputUser)) {
+
+                    alert.setContentText("密码错误");
+                    alert.show();
+                    return;
+                }
 
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setContentText("登录成功");

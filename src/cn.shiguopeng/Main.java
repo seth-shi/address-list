@@ -6,8 +6,6 @@ import cn.shiguopeng.databases.drives.FileDrive;
 import cn.shiguopeng.foundtions.ModelFactory;
 import javafx.application.Application;
 
-import javax.annotation.processing.SupportedSourceVersion;
-
 public class Main {
 
 
@@ -16,7 +14,7 @@ public class Main {
         // 初始化使用文件驱动装载数据
         ModelFactory.setDrive(new FileDrive());
 
-//         Application.launch(LoginController.class, args);
+        Application.launch(LoginController.class, args);
 
     }
 }

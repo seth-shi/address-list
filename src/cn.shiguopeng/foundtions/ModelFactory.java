@@ -50,6 +50,11 @@ public class ModelFactory implements Model {
     }
 
     @Override
+    public boolean is(Model model) {
+        return false;
+    }
+
+    @Override
     public HashMap<String, Field> getFields() {
 
         return fields;

@@ -1,5 +1,6 @@
 package cn.shiguopeng.app.controllers;
 
+import cn.shiguopeng.app.models.UserModel;
 import cn.shiguopeng.app.views.RegisterView;
 import cn.shiguopeng.contracts.View;
 import cn.shiguopeng.enums.StoreOptionEnum;
@@ -13,7 +14,6 @@ import javafx.stage.Stage;
 
 public class RegisterController extends ControllerFactory {
 
-    private Stage stage;
 
 
     @Override
@@ -53,19 +53,12 @@ public class RegisterController extends ControllerFactory {
                 String confirmPassword = confirmPasswordInput.getText();
 
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-//                if (! password.equals(confirmPassword)) {
-//
-//                    alert.setContentText("两次密码不一致");
-//                    alert.show();
-//                    return;
-//                }
-//
-//                if (usersManager.has(username)) {
-//
-//                    alert.setContentText("用户名已经存在");
-//                    alert.show();
-//                    return;
-//                }
+                if (! password.equals(confirmPassword)) {
+
+                    alert.setContentText("两次密码不一致");
+                    alert.show();
+                    return;
+                }
 
                 if (password.length() < 4) {
 
@@ -89,8 +82,17 @@ public class RegisterController extends ControllerFactory {
                     return;
                 }
 
+                UserModel inputUser = new UserModel(username, password);
 
-//                usersManager.put(username, password);
+                if (inputUser.first() != null) {
+
+                    alert.setContentText("用户名已经存在");
+                    alert.show();
+                    return;
+                }
+
+                // 创建用户
+                inputUser.create();
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setContentText("注册成功,请去登录吧");
                 alert.showAndWait();
