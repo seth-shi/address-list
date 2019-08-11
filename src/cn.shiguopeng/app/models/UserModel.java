@@ -16,8 +16,8 @@ public class UserModel extends ModelFactory {
 
         this.indexFields = new String[] {"username", "password"};
 
-        fields.put("username", new Field(StoreOptionEnum.BYTE_SIZE * 12));
-        fields.put("password", new Field(StoreOptionEnum.BYTE_SIZE * 32));
+        fields.put("username", new Field(StoreOptionEnum.CHAR_SIZE * 12));
+        fields.put("password", new Field(StoreOptionEnum.CHAR_SIZE * 32));
     }
 
     public UserModel(String username) {
@@ -74,26 +74,16 @@ public class UserModel extends ModelFactory {
         return field.getValue().equals(fields.get("username").getValue());
     }
 
-    @Override
-    public boolean is(Model model) {
 
-        Field usernameField = model.getFields().get("username");
-        Field passwordField = model.getFields().get("password");
-
-        if (usernameField == null || passwordField == null) {
-
-            return false;
-        }
-
-        System.out.println("密码=" + fields.get("password").getValue() + " "+fields.get("password").getValue().length());
-        System.out.println("密码=" + passwordField.getValue() + "  leng="+passwordField.getValue().length());
-        return usernameField.getValue().equals(fields.get("username").getValue()) &&
-                passwordField.getValue().equals(fields.get("password").getValue());
-    }
 
     public String getDataFile() {
 
         return Main.class.getResource("/").getPath() + "/data/users.dat";
+    }
+
+    public String getName() {
+
+        return fields.get("username").getValue();
     }
 
     public String toString() {

@@ -51,7 +51,22 @@ public class ModelFactory implements Model {
 
     @Override
     public boolean is(Model model) {
-        return false;
+
+        for (String key : indexFields) {
+
+            Field field = model.getFields().get(key);
+            if (field == null) {
+
+                return false;
+            }
+
+            if (! fields.get(key).getValue().equals(field.getValue())) {
+
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
