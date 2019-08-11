@@ -2,9 +2,8 @@ package cn.shiguopeng.contracts;
 
 public interface DataDrive {
 
-    void create(Model model);
-    void delete(Model model);
-    void update(Model model);
-
+    boolean create(Model model);
+    boolean delete(Model model);
+    boolean update(Model oldModel, Model newModel);
     Model first(Model model);
 }

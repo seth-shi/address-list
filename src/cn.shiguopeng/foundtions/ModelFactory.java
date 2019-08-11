@@ -5,7 +5,6 @@ import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class ModelFactory implements Model {
 
@@ -21,15 +20,28 @@ public class ModelFactory implements Model {
 
 
     @Override
-    public void create() {
+    public boolean create() {
 
-        drive.create(this);
+        return drive.create(this);
+    }
+
+    @Override
+    public boolean delete() {
+
+        return drive.delete(this);
     }
 
     @Override
     public Model first() {
 
         return drive.first(this);
+    }
+
+
+    @Override
+    public boolean update(Model newModel) {
+
+        return drive.update(this, newModel);
     }
 
     @Override

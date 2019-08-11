@@ -16,9 +16,6 @@ public class Main {
         // 初始化使用文件驱动装载数据
         ModelFactory.setDrive(new FileDrive());
 
-        // new UserModel("david", "123123", true).create();
-        // UserModel user = (UserModel) new UserModel("david").first();
-
 //         Application.launch(LoginController.class, args);
 
     }

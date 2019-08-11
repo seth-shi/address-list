@@ -6,7 +6,9 @@ import java.util.HashMap;
 
 public interface Model {
 
-    void create();
+    boolean create();
+    boolean delete();
+    boolean update(Model model);
     Model first();
 
 
