@@ -5,7 +5,7 @@ final public class Encrypt {
     private String key = "I love you not because of who you are, but because of who I am when I am with you.";
     private int keyLength = key.length();
 
-    public Encrypt(FileManager fileManager) {
+    public Encrypt() {
 
         keyLength = key.length();
     }

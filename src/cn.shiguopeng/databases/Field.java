@@ -1,4 +1,4 @@
-package cn.shiguopeng.base;
+package cn.shiguopeng.databases;
 
 import cn.shiguopeng.enums.StoreOptionEnum;
 
@@ -19,9 +19,18 @@ public class Field {
 
     public void setValue(String value) {
 
-        if (value.contains(String.valueOf(StoreOptionEnum.SEPARATOR))) {
+        if (value.contains(String.valueOf(StoreOptionEnum.FILL_BLACK_MARK))) {
 
-            value = value.replace(StoreOptionEnum.SEPARATOR, ' ');
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < value.length(); ++ i) {
+
+                char c = value.charAt(i);
+                if (c != StoreOptionEnum.FILL_BLACK_MARK) {
+
+                    builder.append(c);
+                }
+            }
+            value = builder.toString();
         }
 
         if (value.length() > size) {
@@ -49,6 +58,6 @@ public class Field {
             return value;
         }
 
-        return String.valueOf(StoreOptionEnum.SEPARATOR).repeat(size - valSize)+ this.value;
+        return String.valueOf(StoreOptionEnum.FILL_BLACK_MARK).repeat(size - valSize)+ this.value;
     }
 }

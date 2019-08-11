@@ -1,10 +1,9 @@
 package cn.shiguopeng.app.controllers;
 
-import cn.shiguopeng.contracts.View;
-import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.app.views.RegisterView;
+import cn.shiguopeng.contracts.View;
 import cn.shiguopeng.enums.StoreOptionEnum;
-import cn.shiguopeng.services.UsersManager;
+import cn.shiguopeng.foundtions.ControllerFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -52,22 +51,21 @@ public class RegisterController extends ControllerFactory {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
                 String confirmPassword = confirmPasswordInput.getText();
-                UsersManager usersManager = (UsersManager) cn.shiguopeng.Application.makeObject(UsersManager.class);
 
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                if (! password.equals(confirmPassword)) {
-
-                    alert.setContentText("两次密码不一致");
-                    alert.show();
-                    return;
-                }
-
-                if (usersManager.has(username)) {
-
-                    alert.setContentText("用户名已经存在");
-                    alert.show();
-                    return;
-                }
+//                if (! password.equals(confirmPassword)) {
+//
+//                    alert.setContentText("两次密码不一致");
+//                    alert.show();
+//                    return;
+//                }
+//
+//                if (usersManager.has(username)) {
+//
+//                    alert.setContentText("用户名已经存在");
+//                    alert.show();
+//                    return;
+//                }
 
                 if (password.length() < 4) {
 
@@ -77,22 +75,22 @@ public class RegisterController extends ControllerFactory {
                 }
 
                 // 用户名和密码都不能包含 =
-                if (username.contains(String.valueOf(StoreOptionEnum.SEPARATOR))) {
+                if (username.contains(String.valueOf(StoreOptionEnum.FILL_BLACK_MARK))) {
 
-                    alert.setContentText("用户名不能包含" + StoreOptionEnum.SEPARATOR + "符号");
+                    alert.setContentText("用户名不能包含" + StoreOptionEnum.FILL_BLACK_MARK + "符号");
                     alert.show();
                     return;
                 }
 
-                if (password.contains(String.valueOf(StoreOptionEnum.SEPARATOR))) {
+                if (password.contains(String.valueOf(StoreOptionEnum.FILL_BLACK_MARK))) {
 
-                    alert.setContentText("密码不能包含" + StoreOptionEnum.SEPARATOR + "符号");
+                    alert.setContentText("密码不能包含" + StoreOptionEnum.FILL_BLACK_MARK + "符号");
                     alert.show();
                     return;
                 }
 
 
-                usersManager.put(username, password);
+//                usersManager.put(username, password);
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setContentText("注册成功,请去登录吧");
                 alert.showAndWait();

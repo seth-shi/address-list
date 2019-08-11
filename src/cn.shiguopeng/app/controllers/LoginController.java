@@ -1,10 +1,8 @@
 package cn.shiguopeng.app.controllers;
 
+import cn.shiguopeng.app.views.LoginView;
 import cn.shiguopeng.contracts.View;
 import cn.shiguopeng.foundtions.ControllerFactory;
-import cn.shiguopeng.app.models.UserModel;
-import cn.shiguopeng.app.views.LoginView;
-import cn.shiguopeng.services.UsersManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -49,24 +47,23 @@ public class LoginController extends ControllerFactory {
                 String username = usernameInput.getText();
                 String password = passwordInput.getText();
 
-                UsersManager usersManager = (UsersManager) cn.shiguopeng.Application.makeObject(UsersManager.class);
 
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                if (! usersManager.has(username)) {
-
-                    alert.setContentText("无效的用户名");
-                    alert.show();
-                    return;
-                }
-
-                // 密码加密解码
-                UserModel model = usersManager.get(username);
-                if (! false) {
-
-                    alert.setContentText("密码错误");
-                    alert.show();
-                    return;
-                }
+//                if (! usersManager.has(username)) {
+//
+//                    alert.setContentText("无效的用户名");
+//                    alert.show();
+//                    return;
+//                }
+//
+//                // 密码加密解码
+//                UserModel model = usersManager.get(username);
+//                if (! false) {
+//
+//                    alert.setContentText("密码错误");
+//                    alert.show();
+//                    return;
+//                }
 
                 alert.setAlertType(Alert.AlertType.INFORMATION);
                 alert.setContentText("登录成功");
