@@ -4,6 +4,7 @@ import cn.shiguopeng.contracts.DataDrive;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ModelFactory implements Model {
@@ -35,6 +36,13 @@ public class ModelFactory implements Model {
     public Model first() {
 
         return drive.first(this);
+    }
+
+
+    @Override
+    public ArrayList<Model> get(int page) {
+
+        return drive.get(this, page);
     }
 
 
@@ -118,7 +126,25 @@ public class ModelFactory implements Model {
     }
 
     @Override
+    public int getPageLimit() {
+
+        return 10;
+    }
+
+    @Override
     public String toString() {
-        return null;
+
+        StringBuilder data = new StringBuilder();
+
+        for (String key : indexFields) {
+
+            Field field = fields.get(key);
+            if (null != field) {
+
+                data.append(field.toString());
+            }
+        }
+
+        return data.toString();
     }
 }

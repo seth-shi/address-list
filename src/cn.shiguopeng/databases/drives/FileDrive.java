@@ -4,8 +4,10 @@ import cn.shiguopeng.Main;
 import cn.shiguopeng.contracts.DataDrive;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
+import cn.shiguopeng.foundtions.ModelFactory;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class FileDrive implements DataDrive {
@@ -243,5 +245,65 @@ public class FileDrive implements DataDrive {
         }
 
         return null;
+    }
+
+    @Override
+    public ArrayList<Model> get(Model model, int page) {
+
+        // 先获取文件
+        int limit = model.getPageLimit();
+        File pf = fileNotExistsCreate(model.getDataFile());
+        ArrayList<Model> models = new ArrayList<>(limit);
+
+        int breakLines = (page - 1) * limit;
+
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new FileReader(pf)
+            );
+
+            char[] charBuffer = new char[model.getDataSize()];
+
+
+            while ((reader.read(charBuffer)) != -1) {
+
+                if (breakLines > 0) {
+                    -- breakLines;
+                    continue;
+                }
+
+                String line = new String(charBuffer);
+
+                // 一次读入一行数据
+                Model newModel = model.newInstance();
+                // 新模型的新属性列表
+                String[] indexFields = newModel.getIndexFields();
+                HashMap<String, Field> fields = newModel.getFields();
+
+                int offset = 0;
+                for (String key : indexFields) {
+
+                    Field field = fields.get(key);
+
+                    int size = field.getSize();
+                    field.setValue(line.substring(offset, size+offset));
+                    offset += size;
+
+                    newModel.setField(key, field);
+                }
+                
+                models.add(newModel);
+                if (models.size() == limit) {
+                    break;
+                }
+            }
+
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return models;
     }
 }

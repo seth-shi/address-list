@@ -9,8 +9,11 @@ import cn.shiguopeng.foundtions.ModelFactory;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
+import java.util.logging.Logger;
 
 public class ContactModel extends ModelFactory {
+
+
 
     // 标识是否登录
     private static UserModel userModel;
@@ -24,6 +27,24 @@ public class ContactModel extends ModelFactory {
         this.fields.put("name", new Field(StoreOptionEnum.CHAR_SIZE * 12));
         this.fields.put("phone", new Field(StoreOptionEnum.CHAR_SIZE * 12));
     }
+
+    public ContactModel(String name, String phone) {
+
+        this();
+        fields.get("no").setValue(createNo());
+        fields.get("name").setValue(name);
+        fields.get("phone").setValue(phone);
+    }
+
+    public ContactModel(String no, String name, String phone) {
+
+        this();
+        fields.get("no").setValue(no);
+        fields.get("name").setValue(name);
+        fields.get("phone").setValue(phone);
+    }
+
+
 
     @Override
     public boolean whereIs(Model model) {
@@ -41,7 +62,7 @@ public class ContactModel extends ModelFactory {
 
     @Override
     public Model newInstance() {
-        return super.newInstance();
+        return new ContactModel();
     }
 
     @Override
@@ -49,18 +70,14 @@ public class ContactModel extends ModelFactory {
 
         if (ContactModel.userModel == null) {
 
-            System.out.println("异常读取");
+            Logger.getGlobal().info("未登录异常读取");
+            System.exit(0);
         }
 
         String name = ContactModel.userModel.getName();
         String file = new String(Base64.getEncoder().encode(name.getBytes())) + ".dat";
 
-        return Main.class.getResource("/").getPath() + file;
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
+        return Main.class.getResource("/").getPath() + "data/" + file;
     }
 
     private String createNo() {
@@ -69,5 +86,9 @@ public class ContactModel extends ModelFactory {
         String randomString = String.valueOf((int)((Math.random() * 8 + 1) * 1000));
 
         return timeString + randomString;
+    }
+
+    public static void setUserModel(UserModel userModel) {
+        ContactModel.userModel = userModel;
     }
 }

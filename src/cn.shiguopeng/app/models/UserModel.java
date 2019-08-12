@@ -85,20 +85,4 @@ public class UserModel extends ModelFactory {
 
         return fields.get("username").getValue();
     }
-
-    public String toString() {
-
-        StringBuilder data = new StringBuilder();
-
-        for (String key : indexFields) {
-
-            Field field = fields.get(key);
-            if (null != field) {
-
-                data.append(field.toString());
-            }
-        }
-
-        return data.toString();
-    }
 }

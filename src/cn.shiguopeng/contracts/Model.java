@@ -1,7 +1,9 @@
 package cn.shiguopeng.contracts;
 
 import cn.shiguopeng.databases.Field;
+import cn.shiguopeng.foundtions.ModelFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public interface Model {
@@ -10,6 +12,7 @@ public interface Model {
     boolean delete();
     boolean update(Model model);
     Model first();
+    ArrayList<Model> get(int page);
 
 
     boolean whereIs(Model model);
@@ -23,4 +26,5 @@ public interface Model {
 
     String getDataFile();
     int getDataSize();
+    int getPageLimit();
 }
