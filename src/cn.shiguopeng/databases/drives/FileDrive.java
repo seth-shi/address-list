@@ -248,10 +248,14 @@ public class FileDrive implements DataDrive {
     }
 
     @Override
-    public int count() {
-        // 获取文件内容大小, 除以数据数量
-        // TODO
-        return 0;
+    public int count(Model model) {
+        // 先获取文件
+        File pf = fileNotExistsCreate(model.getDataFile());
+
+        int sliceSize = model.getDataSize();
+
+        // 正常情况下总是整数的
+        return (int)pf.length() / sliceSize;
     }
 
     @Override

@@ -86,7 +86,7 @@ public class ModelFactory implements Model {
     @Override
     public int count() {
 
-        return drive.count();
+        return drive.count(this);
     }
 
     @Override

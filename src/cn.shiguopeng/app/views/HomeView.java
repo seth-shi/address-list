@@ -26,8 +26,18 @@ public class HomeView extends ViewFactory {
         Panel panel = new Panel("欢迎使用通讯录");
         panel.getStyleClass().add("panel-info");
 
-        Pagination pagination = new Pagination(5);
+        // 获取数据总条数
+        ContactModel model = new ContactModel();
+        int count = model.count();
+        int limit = model.getPageLimit();
+        int pageCount = (int) Math.ceil((double) count / limit);
+
+
+        Pagination pagination = new Pagination();
         pagination.setPageFactory(this::makePageFactory);
+        pagination.setMaxPageIndicatorCount(5);
+        pagination.setPageCount(pageCount);
+
 
         panel.setBody(pagination);
 
@@ -37,10 +47,6 @@ public class HomeView extends ViewFactory {
 
 
         HomeController controller = (HomeController) this.controller;
-//
-//        // 点击注册
-//        registerLabel.setOnMouseClicked(controller.gotoRegisterEvent());
-//        loginBtn.setOnAction(controller.loginEvent(usernameInput, passwordInput));
 
         stage.show();
     }
@@ -68,7 +74,7 @@ public class HomeView extends ViewFactory {
 
             HashMap<String, Field> fields = model.getFields();
 
-            Text numberTxt = new Text(String.valueOf(i));
+            Text numberTxt = new Text(String.valueOf(i + 1));
             Text noTxt = new Text(fields.get("no").getValue());
             Text nameTxt = new Text(fields.get("name").getValue());
             Text phoneTxt = new Text(fields.get("phone").getValue());
@@ -78,6 +84,10 @@ public class HomeView extends ViewFactory {
             gridpane.add(nameTxt, 2, i + 1);
             gridpane.add(phoneTxt, 3, i + 1);
         }
+
+
+        // 如果不够，那也进行填充
+
 
         gridpane.setVgap(9);
         gridpane.setHgap(10);
