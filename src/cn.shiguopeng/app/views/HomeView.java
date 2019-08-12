@@ -5,10 +5,14 @@ import cn.shiguopeng.app.models.ContactModel;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
 import cn.shiguopeng.foundtions.ViewFactory;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Pagination;
+import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
@@ -23,8 +27,15 @@ public class HomeView extends ViewFactory {
 
         super.render();
 
+        HomeController controller = (HomeController) this.controller;
+
+        // 最外层容器
+        BorderPane container = new BorderPane();
+
         Panel panel = new Panel("欢迎使用通讯录");
         panel.getStyleClass().add("panel-info");
+
+        container.setTop(makeMenus(controller));
 
         // 获取数据总条数
         ContactModel model = new ContactModel();
@@ -38,17 +49,38 @@ public class HomeView extends ViewFactory {
         pagination.setMaxPageIndicatorCount(5);
         pagination.setPageCount(pageCount);
 
-
         panel.setBody(pagination);
+        container.setCenter(panel);
 
-        Scene scene = new Scene(panel, 100, 20);
+        Scene scene = new Scene(container, 100, 20);
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
         stage.setScene(scene);
 
 
-        HomeController controller = (HomeController) this.controller;
 
         stage.show();
+    }
+
+
+    private Node makeMenus(HomeController controller) {
+
+        MenuBar menuBar = new MenuBar();
+        menuBar.prefWidthProperty().bind(stage.widthProperty());
+
+
+        // 退出菜单
+        Menu fileMenu = new Menu("文件");
+        MenuItem exitItem = new MenuItem("退出");
+        exitItem.setOnAction(actionEvent -> Platform.exit());
+        fileMenu.getItems().addAll(exitItem, new SeparatorMenuItem());
+
+        // 新建联系人
+        Menu addMenu = new Menu("添加联系人");
+        addMenu.setOnAction(controller.addContactAction());
+
+        menuBar.getMenus().addAll(fileMenu, addMenu);
+
+        return menuBar;
     }
 
     private Node makePageFactory(Integer page) {

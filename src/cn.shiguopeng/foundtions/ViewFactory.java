@@ -33,6 +33,6 @@ public class ViewFactory implements View {
         stage.getIcons().add(new Image("/resources/icon.png"));
         stage.setTitle("通讯录");
         stage.setWidth(600);
-        stage.setHeight(400);
+        stage.setHeight(450);
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class HomeController extends ControllerFactory {
 
@@ -40,38 +41,17 @@ public class HomeController extends ControllerFactory {
         };
     }
 
-    public EventHandler<ActionEvent> loginEvent(TextField usernameInput, TextField passwordInput) {
+    public EventHandler<ActionEvent> addContactAction() {
 
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
 
-                String username = usernameInput.getText();
-                String password = passwordInput.getText();
+                System.out.println("点击添加联系人");
 
-                UserModel inputUser = new UserModel(username, password);
-
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-
-                UserModel dbUser = (UserModel) inputUser.first();
-                if (dbUser == null) {
-
-                    alert.setContentText("无效的用户名");
-                    alert.show();
-                    return;
-                }
-
-                // 密码加密解码
-                if (! dbUser.is(inputUser)) {
-
-                    alert.setContentText("密码错误");
-                    alert.show();
-                    return;
-                }
-
-                alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.setContentText("登录成功");
-                alert.showAndWait();
+                Stage addStage = new Stage(StageStyle.UNIFIED);
+                addStage.initOwner(stage);
+                addStage.show();
             }
         };
     }
