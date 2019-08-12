@@ -11,4 +11,5 @@ public interface DataDrive {
     boolean update(Model oldModel, Model newModel);
     Model first(Model model);
     ArrayList<Model> get(Model model, int page);
+    int count();
 }

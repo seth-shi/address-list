@@ -84,6 +84,12 @@ public class ModelFactory implements Model {
     }
 
     @Override
+    public int count() {
+
+        return drive.count();
+    }
+
+    @Override
     public String[] getIndexFields() {
 
         return indexFields;

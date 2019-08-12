@@ -248,6 +248,13 @@ public class FileDrive implements DataDrive {
     }
 
     @Override
+    public int count() {
+        // 获取文件内容大小, 除以数据数量
+        // TODO
+        return 0;
+    }
+
+    @Override
     public ArrayList<Model> get(Model model, int page) {
 
         // 先获取文件

@@ -13,6 +13,7 @@ public interface Model {
     boolean update(Model model);
     Model first();
     ArrayList<Model> get(int page);
+    int count();
 
 
     boolean whereIs(Model model);
