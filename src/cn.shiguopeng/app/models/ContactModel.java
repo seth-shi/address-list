@@ -13,35 +13,42 @@ import java.util.logging.Logger;
 
 public class ContactModel extends ModelFactory {
 
-
-
     // 标识是否登录
     private static UserModel userModel;
 
     public ContactModel() {
 
         // 内部维护一个编号查找
-        this.indexFields = new String[]{"no", "name", "phone"};
+        this.indexFields = new String[]{"no", "name", "phone", "sex", "age", "email"};
 
         this.fields.put("no", new Field(StoreOptionEnum.CHAR_SIZE * 16));
         this.fields.put("name", new Field(StoreOptionEnum.CHAR_SIZE * 12));
         this.fields.put("phone", new Field(StoreOptionEnum.CHAR_SIZE * 12));
+        this.fields.put("sex", new Field(StoreOptionEnum.CHAR_SIZE));
+        this.fields.put("age", new Field(StoreOptionEnum.CHAR_SIZE * 4));
+        this.fields.put("email", new Field(StoreOptionEnum.CHAR_SIZE * 30));
     }
 
-    public ContactModel(String name, String phone) {
+    public ContactModel(String name, String phone, String sex, String age, String email) {
 
         this();
         fields.get("no").setValue(createNo());
         fields.get("name").setValue(name);
         fields.get("phone").setValue(phone);
+        fields.get("sex").setValue(sex);
+        fields.get("age").setValue(age);
+        fields.get("email").setValue(email);
     }
 
-    public ContactModel(String no, String name, String phone) {
+    public ContactModel(String no, String name, String phone, String sex, String age, String email) {
 
         this();
         fields.get("no").setValue(no);
         fields.get("name").setValue(name);
         fields.get("phone").setValue(phone);
+        fields.get("sex").setValue(sex);
+        fields.get("age").setValue(age);
+        fields.get("email").setValue(email);
     }
 
 
@@ -49,7 +56,7 @@ public class ContactModel extends ModelFactory {
     @Override
     public boolean whereIs(Model model) {
 
-        Field field = model.getFields().get("username");
+        Field field = model.getFields().get("no");
 
         if (field == null) {
 

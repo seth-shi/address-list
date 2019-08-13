@@ -17,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -85,45 +86,66 @@ public class HomeView extends ViewFactory {
 
     private Node makePageFactory(Integer page) {
 
-        ArrayList<Model> models = new ContactModel().get(page + 1);
+        ContactModel contactModel = new ContactModel();
+        ArrayList<Model> models = contactModel.get(page + 1);
         // 表格布局
 
         GridPane gridpane = new GridPane();
 
-        Text headerNumberTxt = new Text("序号");
-        Text headerNoTxt = new Text("编号");
-        Text headerNameTxt = new Text("名字");
-        Text headerPhoneTxt = new Text("手机号");
 
-        gridpane.add(headerNumberTxt, 0, 0);
-        gridpane.add(headerNoTxt, 1, 0);
-        gridpane.add(headerNameTxt, 2, 0);
-        gridpane.add(headerPhoneTxt, 3, 0);
+        String[] fieldText = new String[] {"序号", "编号", "名字", "性别", "手机号", "年龄", "邮箱", "操作"};
+        String[] fieldIds = new String[] {"number", "no", "name", "sex", "phone", "age", "email", "actions"};
+
+
+        Text headerNumberTxt = new Text("序号");
+
+        // 设置文字大小
+        for (int i = 0; i < fieldText.length; ++ i) {
+
+            Text text = new Text(fieldText[i]);
+            text.getStyleClass().addAll("h4");
+            gridpane.add(text, i, 0);
+        }
 
         for (int i = 0; i < models.size(); ++i) {
 
             ContactModel model = (ContactModel) models.get(i);
-
             HashMap<String, Field> fields = model.getFields();
 
-            Text numberTxt = new Text(String.valueOf(i + 1));
-            Text noTxt = new Text(fields.get("no").getValue());
-            Text nameTxt = new Text(fields.get("name").getValue());
-            Text phoneTxt = new Text(fields.get("phone").getValue());
+            for (int j = 0; j < fieldIds.length; ++ j) {
 
-            gridpane.add(numberTxt, 0, i + 1);
-            gridpane.add(noTxt, 1, i + 1);
-            gridpane.add(nameTxt, 2, i + 1);
-            gridpane.add(phoneTxt, 3, i + 1);
+                String column = fieldIds[j];
+
+                if (column.equals("number")) {
+
+                    Text numTxt = new Text(String.valueOf(i + 1));
+                    gridpane.add(numTxt, j, i + 1);
+                    continue;
+                } else if (column.equals("actions")) {
+
+                    Button updateBtn = new Button("修改");
+                    Button deleteBtn = new Button("删除");
+                    updateBtn.getStyleClass().addAll("btn-sm", "btn-primary");
+                    deleteBtn.getStyleClass().addAll("btn-sm", "btn-danger");
+                    gridpane.add(updateBtn, j, i+1);
+                    gridpane.add(deleteBtn, j + 1, i+1);
+                    continue;
+                }
+
+                Text text = new Text(fields.get(fieldIds[j]).getValue());
+                text.getStyleClass().addAll("h5", "text-success");
+                gridpane.add(text, j, i + 1);
+            }
+
+
+
+
+
         }
 
 
-        // 如果不够，那也进行填充
-
-
         gridpane.setVgap(9);
-        gridpane.setHgap(10);
-        gridpane.setAlignment(Pos.CENTER);
+        gridpane.setHgap(20);
 
         return gridpane;
     }
