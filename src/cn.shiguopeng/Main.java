@@ -23,11 +23,15 @@ public class Main {
         // 初始化使用文件驱动装载数据
         ModelFactory.setDrive(new FileDrive());
 
-
-
         UserModel userModel = (UserModel) new UserModel("david").first();
 
         ContactModel.setUserModel(userModel);
+
+
+        new ContactModel("大卫1", "15678904596", "男", "21", "1033404553@qq.com").create();
+        new ContactModel("大卫2", "15678904596", "男", "21", "1033404553@qq.com").create();
+
+
 
         Application.launch(HomeController.class, args);
     }

@@ -29,6 +29,13 @@ public class ContactModel extends ModelFactory {
         this.fields.put("email", new Field(StoreOptionEnum.CHAR_SIZE * 30));
     }
 
+    public ContactModel(String no) {
+
+        this();
+
+        this.fields.get("no").setValue(no);
+    }
+
     public ContactModel(String name, String phone, String sex, String age, String email) {
 
         this();

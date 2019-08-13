@@ -4,7 +4,6 @@ import cn.shiguopeng.Main;
 import cn.shiguopeng.contracts.DataDrive;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
-import cn.shiguopeng.foundtions.ModelFactory;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -16,10 +15,10 @@ public class FileDrive implements DataDrive {
 
         File pf = new File(filePath);
 
-        if (! pf.exists()) {
+        if (!pf.exists()) {
 
             File df = new File(filePath.substring(0, filePath.lastIndexOf('/')));
-            if (! df.isDirectory()) {
+            if (!df.isDirectory()) {
 
                 df.mkdirs();
             }
@@ -95,7 +94,7 @@ public class FileDrive implements DataDrive {
                     Field field = fields.get(key);
 
                     int size = field.getSize();
-                    field.setValue(line.substring(offset, size));
+                    field.setValue(line.substring(offset, offset + size));
                     offset += size;
 
                     readModel.setField(key, field);
@@ -162,7 +161,7 @@ public class FileDrive implements DataDrive {
                     Field field = fields.get(key);
 
                     int size = field.getSize();
-                    field.setValue(line.substring(offset, size));
+                    field.setValue(line.substring(offset, size + offset));
                     offset += size;
 
                     readModel.setField(key, field);
@@ -173,7 +172,7 @@ public class FileDrive implements DataDrive {
 
                     // 修改文件内容
                     line = newModel.toString();
-                    System.out.println("内容="+line + " 内容长度="+line.length());
+                    System.out.println("内容=" + line + " 内容长度=" + line.length());
                 }
 
                 writer.write(line);
@@ -224,7 +223,7 @@ public class FileDrive implements DataDrive {
                     Field field = fields.get(key);
 
                     int size = field.getSize();
-                    field.setValue(line.substring(offset, size+offset));
+                    field.setValue(line.substring(offset, size + offset));
                     offset += size;
 
                     newModel.setField(key, field);
@@ -255,7 +254,7 @@ public class FileDrive implements DataDrive {
         int sliceSize = model.getDataSize();
 
         // 正常情况下总是整数的
-        return (int)pf.length() / sliceSize;
+        return (int) pf.length() / sliceSize;
     }
 
     @Override
@@ -279,7 +278,7 @@ public class FileDrive implements DataDrive {
             while ((reader.read(charBuffer)) != -1) {
 
                 if (breakLines > 0) {
-                    -- breakLines;
+                    --breakLines;
                     continue;
                 }
 
@@ -297,12 +296,12 @@ public class FileDrive implements DataDrive {
                     Field field = fields.get(key);
 
                     int size = field.getSize();
-                    field.setValue(line.substring(offset, size+offset));
+                    field.setValue(line.substring(offset, size + offset));
                     offset += size;
 
                     newModel.setField(key, field);
                 }
-                
+
                 models.add(newModel);
                 if (models.size() == limit) {
                     break;

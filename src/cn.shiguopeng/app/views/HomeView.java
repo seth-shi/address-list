@@ -24,12 +24,14 @@ import java.util.HashMap;
 
 public class HomeView extends ViewFactory {
 
+    private HomeController homeController;
+
     @Override
     public void render() {
 
         super.render();
 
-        HomeController controller = (HomeController) this.controller;
+        homeController = (HomeController) this.controller;
 
         // 最外层容器
         BorderPane container = new BorderPane();
@@ -37,7 +39,7 @@ public class HomeView extends ViewFactory {
         Panel panel = new Panel("欢迎使用通讯录");
         panel.getStyleClass().add("panel-info");
 
-        container.setTop(makeMenus(controller));
+        container.setTop(makeMenus(homeController));
 
         // 获取数据总条数
         ContactModel model = new ContactModel();
@@ -50,6 +52,9 @@ public class HomeView extends ViewFactory {
         pagination.setPageFactory(this::makePageFactory);
         pagination.setMaxPageIndicatorCount(5);
         pagination.setPageCount(pageCount);
+
+        // 设置分页数据
+        homeController.setPagination(pagination);
 
         panel.setBody(pagination);
         container.setCenter(panel);
@@ -90,6 +95,7 @@ public class HomeView extends ViewFactory {
         ContactModel contactModel = new ContactModel();
         ArrayList<Model> models = contactModel.get(page + 1);
         // 表格布局
+        System.out.println("请求数据 第" + page + " 页");
 
         GridPane gridpane = new GridPane();
 
@@ -97,8 +103,6 @@ public class HomeView extends ViewFactory {
         String[] fieldText = new String[] {"序号", "编号", "名字", "性别", "手机号", "年龄", "邮箱", "操作"};
         String[] fieldIds = new String[] {"number", "no", "name", "sex", "phone", "age", "email", "actions"};
 
-
-        Text headerNumberTxt = new Text("序号");
 
         // 设置文字大小
         for (int i = 0; i < fieldText.length; ++ i) {
@@ -128,13 +132,10 @@ public class HomeView extends ViewFactory {
                     Button deleteBtn = new Button("删除");
                     updateBtn.getStyleClass().addAll("btn-sm", "btn-primary");
                     deleteBtn.getStyleClass().addAll("btn-sm", "btn-danger");
-                    updateBtn.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
 
-                            System.out.println("按钮点击的编号行是=" + fields.get("no").getValue());
-                        }
-                    });
+
+                    updateBtn.setOnAction(homeController.updateContact(fields.get("no").getValue()));
+                    deleteBtn.setOnAction(homeController.deleteContact(fields.get("no").getValue()));
 
                     gridpane.add(updateBtn, j, i+1);
                     gridpane.add(deleteBtn, j + 1, i+1);
