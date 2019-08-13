@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
@@ -127,6 +128,14 @@ public class HomeView extends ViewFactory {
                     Button deleteBtn = new Button("删除");
                     updateBtn.getStyleClass().addAll("btn-sm", "btn-primary");
                     deleteBtn.getStyleClass().addAll("btn-sm", "btn-danger");
+                    updateBtn.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+
+                            System.out.println("按钮点击的编号行是=" + fields.get("no").getValue());
+                        }
+                    });
+
                     gridpane.add(updateBtn, j, i+1);
                     gridpane.add(deleteBtn, j + 1, i+1);
                     continue;
@@ -136,13 +145,7 @@ public class HomeView extends ViewFactory {
                 text.getStyleClass().addAll("h5", "text-success");
                 gridpane.add(text, j, i + 1);
             }
-
-
-
-
-
         }
-
 
         gridpane.setVgap(9);
         gridpane.setHgap(20);
