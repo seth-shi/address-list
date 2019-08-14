@@ -6,6 +6,8 @@ import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
 import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;

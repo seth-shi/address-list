@@ -82,10 +82,8 @@ public class HomeController extends ControllerFactory {
                     currPageIndex = 0;
                 }
 
-                // TODO 数据已经变更, 但是渲染没这么多, 覆盖不了
                 pagination.setCurrentPageIndex(currPageIndex);
                 pagination.setPageCount(pageCount);
-
             }
         };
     }
