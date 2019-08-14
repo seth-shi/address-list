@@ -4,6 +4,7 @@ import cn.shiguopeng.app.controllers.HomeController;
 import cn.shiguopeng.app.models.ContactModel;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
+import cn.shiguopeng.databases.tables.ContractTable;
 import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -14,6 +15,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -22,7 +25,9 @@ import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 public class HomeView extends ViewFactory {
 
@@ -153,6 +158,65 @@ public class HomeView extends ViewFactory {
         gridpane.setVgap(9);
         gridpane.setHgap(20);
 
-        return gridpane;
+
+
+        ArrayList<ContractTable> contractTables = new ArrayList<>(models.size());
+        for (int i = 0; i < models.size(); ++ i) {
+
+            HashMap<String, Field> fields = models.get(i).getFields();
+
+            ContractTable c = new ContractTable();
+            c.setIndex(String.valueOf(i + 1));
+            c.setNo(fields.get("no").getValue());
+            c.setName(fields.get("name").getValue());
+            c.setPhone(fields.get("phone").getValue());
+            c.setSex(fields.get("sex").getValue());
+            c.setAge(fields.get("age").getValue());
+            c.setEmail(fields.get("email").getValue());
+            contractTables.add(i, c);
+        }
+
+        System.out.println(Arrays.toString(contractTables.toArray()));
+
+        // 使用数据表格
+        ObservableList<ContractTable> lists = FXCollections.observableArrayList(contractTables);
+        TableView tableView = new TableView();
+
+        TableColumn indexColumn = new TableColumn("序号");
+        TableColumn noColumn = new TableColumn("编号");
+        TableColumn nameColumn = new TableColumn("名字");
+        TableColumn sexColumn = new TableColumn("性别");
+        TableColumn phoneColumn = new TableColumn("手机号");
+        TableColumn ageColumn = new TableColumn("年龄");
+        TableColumn emailColumn = new TableColumn("邮箱");
+        TableColumn actionsColumn = new TableColumn("操作");
+        TableColumn updateColumn = new TableColumn("修改");
+        TableColumn deleteColumn = new TableColumn("删除");
+        actionsColumn.getColumns().addAll(updateColumn, deleteColumn);
+
+        // 添加列 隐藏编号
+        noColumn.setVisible(false);
+        tableView.getColumns().addAll(indexColumn, noColumn, nameColumn, sexColumn, phoneColumn, ageColumn, emailColumn, actionsColumn);
+
+
+        // 绑定数据列
+        indexColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("index"));
+        noColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("no"));
+        nameColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("name"));
+        sexColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("sex"));
+        phoneColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("phone"));
+        ageColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("age"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("email"));
+//        actionsColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("sex"));
+//        updateColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("sex"));
+//        deleteColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("sex"));
+
+        tableView.setItems(lists);
+        // 没有数据的时候显示
+        tableView.setPlaceholder(new Text("已经没有更多数据显示了"));
+        // 设置自动拉满
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        
+        return tableView;
     }
 }
