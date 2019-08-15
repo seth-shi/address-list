@@ -4,23 +4,20 @@ import cn.shiguopeng.app.controllers.HomeController;
 import cn.shiguopeng.app.models.ContactModel;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
-import cn.shiguopeng.databases.cells.DeleteButtonCell;
-import cn.shiguopeng.databases.cells.UpdateButtonCell;
+import cn.shiguopeng.databases.cells.ActionsButtonCell;
 import cn.shiguopeng.databases.tables.ContactTable;
 import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
@@ -42,11 +39,6 @@ public class HomeView extends ViewFactory {
         // 最外层容器
         BorderPane container = new BorderPane();
 
-        Panel panel = new Panel("欢迎使用通讯录");
-        panel.getStyleClass().add("panel-info");
-
-        container.setTop(makeMenus(homeController));
-
         // 获取数据总条数
         ContactModel model = new ContactModel();
         int count = model.count();
@@ -56,20 +48,29 @@ public class HomeView extends ViewFactory {
 
         Pagination pagination = new Pagination();
         pagination.setPageFactory(this::makePageFactory);
-        pagination.setMaxPageIndicatorCount(5);
         pagination.setPageCount(pageCount);
 
         // 设置分页数据
         homeController.setPagination(pagination);
+        Panel panel = new Panel();
+        HBox header = new HBox();
 
+        Button reloadBtn = new Button("刷新数据");
+        reloadBtn.getStyleClass().addAll("btn", "btn-default");
+        reloadBtn.setAlignment(Pos.CENTER_RIGHT);
+        reloadBtn.setPadding(new Insets(0, 0, 0, 100));
+
+        header.getChildren().addAll(new Text("欢迎使用通讯录"), reloadBtn);
+        panel.setHeading(header);
+        panel.getStyleClass().add("panel-info");
         panel.setBody(pagination);
+
+        container.setTop(makeMenus(homeController));
         container.setCenter(panel);
 
         Scene scene = new Scene(container, 100, 20);
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
         stage.setScene(scene);
-
-
 
         stage.show();
     }
@@ -133,10 +134,6 @@ public class HomeView extends ViewFactory {
         TableColumn ageColumn = new TableColumn("年龄");
         TableColumn emailColumn = new TableColumn("邮箱");
         TableColumn actionsColumn = new TableColumn("操作");
-        TableColumn updateColumn = new TableColumn();
-        TableColumn deleteColumn = new TableColumn();
-        actionsColumn.getColumns().addAll(updateColumn, deleteColumn);
-
         // 添加列 隐藏编号
         noColumn.setVisible(false);
         tableView.getColumns().addAll(indexColumn, noColumn, nameColumn, sexColumn, phoneColumn, ageColumn, emailColumn, actionsColumn);
@@ -152,18 +149,11 @@ public class HomeView extends ViewFactory {
         emailColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("email"));
 
         // 修改按钮列
-        updateColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
+        actionsColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
             @Override
             public TableCell call(TableColumn tableColumn) {
 
-                return new UpdateButtonCell();
-            }
-        });
-        // 删除按钮列
-        deleteColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
-            @Override
-            public TableCell call(TableColumn tableColumn) {
-                return new DeleteButtonCell();
+                return new ActionsButtonCell();
             }
         });
 
