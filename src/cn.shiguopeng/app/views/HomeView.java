@@ -4,10 +4,13 @@ import cn.shiguopeng.app.controllers.HomeController;
 import cn.shiguopeng.app.models.ContactModel;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
+import cn.shiguopeng.databases.cells.DeleteButtonCell;
+import cn.shiguopeng.databases.cells.UpdateButtonCell;
 import cn.shiguopeng.databases.tables.ContactTable;
 import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -101,7 +104,7 @@ public class HomeView extends ViewFactory {
         ContactModel contactModel = new ContactModel();
         ArrayList<Model> models = contactModel.get(page + 1);
 
-
+        // 把数据模型转换为table
         ArrayList<ContactTable> contractTables = new ArrayList<>(models.size());
         for (int i = 0; i < models.size(); ++ i) {
 
@@ -130,6 +133,9 @@ public class HomeView extends ViewFactory {
         TableColumn ageColumn = new TableColumn("年龄");
         TableColumn emailColumn = new TableColumn("邮箱");
         TableColumn actionsColumn = new TableColumn("操作");
+        TableColumn updateColumn = new TableColumn();
+        TableColumn deleteColumn = new TableColumn();
+        actionsColumn.getColumns().addAll(updateColumn, deleteColumn);
 
         // 添加列 隐藏编号
         noColumn.setVisible(false);
@@ -145,47 +151,23 @@ public class HomeView extends ViewFactory {
         ageColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("age"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("email"));
 
-        actionsColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures, ObservableValue>() {
+        // 修改按钮列
+        updateColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
             @Override
-            public ObservableValue call(TableColumn.CellDataFeatures cellDataFeatures) {
+            public TableCell call(TableColumn tableColumn) {
 
-                ContactTable table = (ContactTable) cellDataFeatures.getValue();
-                System.out.println(table.getNo());
-
-
-                return new ObservableValue() {
-                    @Override
-                    public void addListener(ChangeListener changeListener) {
-
-                    }
-
-                    @Override
-                    public void removeListener(ChangeListener changeListener) {
-
-                    }
-
-                    @Override
-                    public Object getValue() {
-
-
-
-                        return new Button("修改");
-                    }
-
-                    @Override
-                    public void addListener(InvalidationListener invalidationListener) {
-
-                    }
-
-                    @Override
-                    public void removeListener(InvalidationListener invalidationListener) {
-
-                    }
-                };
+                return new UpdateButtonCell();
+            }
+        });
+        // 删除按钮列
+        deleteColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
+            @Override
+            public TableCell call(TableColumn tableColumn) {
+                return new DeleteButtonCell();
             }
         });
 
-        // 居中显示
+        // 设置数据
         tableView.setItems(lists);
         // 没有数据的时候显示
         tableView.setPlaceholder(new Text("已经没有更多数据显示了"));
