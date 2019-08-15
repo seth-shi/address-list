@@ -27,9 +27,9 @@ public class Main {
 
         ContactModel.setUserModel(userModel);
 
-
-        new ContactModel("大卫1", "15678904596", "男", "21", "1033404553@qq.com").create();
-        new ContactModel("大卫2", "15678904596", "男", "21", "1033404553@qq.com").create();
+//
+//        new ContactModel("大卫1", "15678904596", "男", "21", "1033404553@qq.com").create();
+//        new ContactModel("大卫2", "15678904596", "男", "21", "1033404553@qq.com").create();
 
 
 

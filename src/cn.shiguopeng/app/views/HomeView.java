@@ -4,30 +4,26 @@ import cn.shiguopeng.app.controllers.HomeController;
 import cn.shiguopeng.app.models.ContactModel;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
-import cn.shiguopeng.databases.tables.ContractTable;
+import cn.shiguopeng.databases.tables.ContactTable;
 import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.util.Callback;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 public class HomeView extends ViewFactory {
 
@@ -99,73 +95,19 @@ public class HomeView extends ViewFactory {
 
     private Node makePageFactory(Integer page) {
 
-        ContactModel contactModel = new ContactModel();
-        ArrayList<Model> models = contactModel.get(page + 1);
         // 表格布局
         System.out.println("请求数据 第" + page + " 页");
 
-        GridPane gridpane = new GridPane();
+        ContactModel contactModel = new ContactModel();
+        ArrayList<Model> models = contactModel.get(page + 1);
 
 
-        String[] fieldText = new String[] {"序号", "编号", "名字", "性别", "手机号", "年龄", "邮箱", "操作"};
-        String[] fieldIds = new String[] {"number", "no", "name", "sex", "phone", "age", "email", "actions"};
-
-
-        // 设置文字大小
-        for (int i = 0; i < fieldText.length; ++ i) {
-
-            Text text = new Text(fieldText[i]);
-            text.getStyleClass().addAll("h4");
-            gridpane.add(text, i, 0);
-        }
-
-        for (int i = 0; i < models.size(); ++i) {
-
-            ContactModel model = (ContactModel) models.get(i);
-            HashMap<String, Field> fields = model.getFields();
-
-            for (int j = 0; j < fieldIds.length; ++ j) {
-
-                String column = fieldIds[j];
-
-                if (column.equals("number")) {
-
-                    Text numTxt = new Text(String.valueOf(i + 1));
-                    gridpane.add(numTxt, j, i + 1);
-                    continue;
-                } else if (column.equals("actions")) {
-
-                    Button updateBtn = new Button("修改");
-                    Button deleteBtn = new Button("删除");
-                    updateBtn.getStyleClass().addAll("btn-sm", "btn-primary");
-                    deleteBtn.getStyleClass().addAll("btn-sm", "btn-danger");
-
-
-                    updateBtn.setOnAction(homeController.updateContact(fields.get("no").getValue()));
-                    deleteBtn.setOnAction(homeController.deleteContact(fields.get("no").getValue()));
-
-                    gridpane.add(updateBtn, j, i+1);
-                    gridpane.add(deleteBtn, j + 1, i+1);
-                    continue;
-                }
-
-                Text text = new Text(fields.get(fieldIds[j]).getValue());
-                text.getStyleClass().addAll("h5", "text-success");
-                gridpane.add(text, j, i + 1);
-            }
-        }
-
-        gridpane.setVgap(9);
-        gridpane.setHgap(20);
-
-
-
-        ArrayList<ContractTable> contractTables = new ArrayList<>(models.size());
+        ArrayList<ContactTable> contractTables = new ArrayList<>(models.size());
         for (int i = 0; i < models.size(); ++ i) {
 
             HashMap<String, Field> fields = models.get(i).getFields();
 
-            ContractTable c = new ContractTable();
+            ContactTable c = new ContactTable();
             c.setIndex(String.valueOf(i + 1));
             c.setNo(fields.get("no").getValue());
             c.setName(fields.get("name").getValue());
@@ -176,10 +118,8 @@ public class HomeView extends ViewFactory {
             contractTables.add(i, c);
         }
 
-        System.out.println(Arrays.toString(contractTables.toArray()));
-
         // 使用数据表格
-        ObservableList<ContractTable> lists = FXCollections.observableArrayList(contractTables);
+        ObservableList<ContactTable> lists = FXCollections.observableArrayList(contractTables);
         TableView tableView = new TableView();
 
         TableColumn indexColumn = new TableColumn("序号");
@@ -190,9 +130,6 @@ public class HomeView extends ViewFactory {
         TableColumn ageColumn = new TableColumn("年龄");
         TableColumn emailColumn = new TableColumn("邮箱");
         TableColumn actionsColumn = new TableColumn("操作");
-        TableColumn updateColumn = new TableColumn("修改");
-        TableColumn deleteColumn = new TableColumn("删除");
-        actionsColumn.getColumns().addAll(updateColumn, deleteColumn);
 
         // 添加列 隐藏编号
         noColumn.setVisible(false);
@@ -207,10 +144,48 @@ public class HomeView extends ViewFactory {
         phoneColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("phone"));
         ageColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("age"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("email"));
-//        actionsColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("sex"));
-//        updateColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("sex"));
-//        deleteColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("sex"));
 
+        actionsColumn.setCellValueFactory(new Callback<TableColumn.CellDataFeatures, ObservableValue>() {
+            @Override
+            public ObservableValue call(TableColumn.CellDataFeatures cellDataFeatures) {
+
+                ContactTable table = (ContactTable) cellDataFeatures.getValue();
+                System.out.println(table.getNo());
+
+
+                return new ObservableValue() {
+                    @Override
+                    public void addListener(ChangeListener changeListener) {
+
+                    }
+
+                    @Override
+                    public void removeListener(ChangeListener changeListener) {
+
+                    }
+
+                    @Override
+                    public Object getValue() {
+
+
+
+                        return new Button("修改");
+                    }
+
+                    @Override
+                    public void addListener(InvalidationListener invalidationListener) {
+
+                    }
+
+                    @Override
+                    public void removeListener(InvalidationListener invalidationListener) {
+
+                    }
+                };
+            }
+        });
+
+        // 居中显示
         tableView.setItems(lists);
         // 没有数据的时候显示
         tableView.setPlaceholder(new Text("已经没有更多数据显示了"));

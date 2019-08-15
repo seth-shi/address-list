@@ -2,7 +2,7 @@ package cn.shiguopeng.databases.tables;
 
 import javafx.beans.property.SimpleStringProperty;
 
-public class ContractTable {
+public class ContactTable {
 
     private SimpleStringProperty index;
     private SimpleStringProperty no;
@@ -12,7 +12,7 @@ public class ContractTable {
     private SimpleStringProperty sex;
     private SimpleStringProperty email;
 
-    public ContractTable() {
+    public ContactTable() {
 
         this.index = new SimpleStringProperty();
         this.no = new SimpleStringProperty();
