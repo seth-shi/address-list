@@ -1,16 +1,13 @@
 package cn.shiguopeng.app.views;
 
-import cn.shiguopeng.app.controllers.LoginController;
-import cn.shiguopeng.app.controllers.RegisterController;
+import cn.shiguopeng.app.models.ContactModel;
 import cn.shiguopeng.app.models.UserModel;
-import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -19,9 +16,8 @@ import org.kordamp.bootstrapfx.scene.layout.Panel;
 public class LoginView extends ViewFactory {
 
     @Override
-    public void render() {
-
-        super.render();
+    public void start(Stage stage) throws Exception {
+        super.start(stage);
 
         Panel panel = new Panel("欢迎使用通讯录");
         panel.getStyleClass().add("panel-info");
@@ -67,7 +63,7 @@ public class LoginView extends ViewFactory {
 
                 // 跳转去注册页面
                 try {
-                    new RegisterController().start(new Stage());
+                    new RegisterView().start(new Stage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -102,9 +98,14 @@ public class LoginView extends ViewFactory {
                     return;
                 }
 
-                alert.setAlertType(Alert.AlertType.INFORMATION);
-                alert.setContentText("登录成功");
-                alert.showAndWait();
+                ContactModel.setUserModel(dbUser);
+                stage.close();
+                // 跳去首页
+                try {
+                    new HomeView().start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 

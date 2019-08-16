@@ -1,17 +1,13 @@
 package cn.shiguopeng.app.views;
 
-import cn.shiguopeng.app.controllers.LoginController;
 import cn.shiguopeng.app.models.UserModel;
 import cn.shiguopeng.enums.StoreOptionEnum;
-import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.foundtions.ViewFactory;
-import cn.shiguopeng.app.controllers.RegisterController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -20,13 +16,9 @@ import org.kordamp.bootstrapfx.scene.layout.Panel;
 public class RegisterView extends ViewFactory {
 
 
-
-
-
     @Override
-    public void render() {
-
-        super.render();
+    public void start(Stage stage) throws Exception {
+        super.start(stage);
 
         Panel panel = new Panel("欢迎使用通讯录");
         panel.getStyleClass().add("panel-info");
@@ -75,7 +67,7 @@ public class RegisterView extends ViewFactory {
                 // 跳转去登录界面
                 try {
 
-                    new LoginController().start(new Stage());
+                    new LoginView().start(new Stage());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

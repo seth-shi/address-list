@@ -9,7 +9,9 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -17,22 +19,28 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.Pair;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.function.Consumer;
 
+@SuppressWarnings("deprecation")
 public class HomeView extends ViewFactory {
 
 
     @Override
-    public void render() {
-
-        super.render();
-
+    public void start(Stage stage) throws Exception {
+        super.start(stage);
 
         // 最外层容器
         BorderPane container = new BorderPane();
@@ -52,19 +60,8 @@ public class HomeView extends ViewFactory {
         Panel panel = new Panel();
         HBox header = new HBox();
 
-        Button reloadBtn = new Button("刷新数据");
-        reloadBtn.getStyleClass().addAll("btn", "btn-default");
-        reloadBtn.setAlignment(Pos.CENTER_RIGHT);
-        reloadBtn.setPadding(new Insets(0, 0, 0, 100));
-        reloadBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
 
-                pagination.getPageFactory().call(pagination.getCurrentPageIndex() - 1);
-            }
-        });
-
-        header.getChildren().addAll(new Text("欢迎使用通讯录"), reloadBtn);
+        header.getChildren().addAll(new Text("欢迎使用通讯录"));
         panel.setHeading(header);
         panel.getStyleClass().add("panel-info");
         panel.setBody(pagination);
@@ -90,18 +87,108 @@ public class HomeView extends ViewFactory {
         Menu fileMenu = new Menu("文件");
         MenuItem exitItem = new MenuItem("退出");
         exitItem.setOnAction(actionEvent -> Platform.exit());
-        fileMenu.getItems().addAll(exitItem, new SeparatorMenuItem());
 
-        // 新建联系人
-        Menu addMenu = new Menu("添加联系人");
-        addMenu.setOnAction(new EventHandler<ActionEvent>() {
+
+        MenuItem addItem = new MenuItem("添加联系人");
+        addItem.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+
+                Dialog dialog = new Dialog<>();
+                dialog.setTitle("添加联系人");
+                dialog.setHeaderText("通讯录");
+
+                ButtonType addButtonType = new ButtonType("添加", ButtonBar.ButtonData.OK_DONE);
+                dialog.getDialogPane().getButtonTypes().addAll(addButtonType, ButtonType.CANCEL);
+
+                GridPane grid = new GridPane();
+                grid.setHgap(10);
+                grid.setVgap(10);
+                grid.setPadding(new Insets(20, 150, 10, 10));
+
+                String[] keys = {
+                        "name", "sex", "phone", "age", "email"
+                };
+                String[] values = {
+                        "名字", "性别", "手机号", "年龄", "邮箱"
+                };
+
+                String[] defaults = {
+                        "", "男", "", "21", ""
+                };
+
+                HashMap<String, TextField> texts = new HashMap<>();
+
+                for (int i = 0; i < keys.length; ++ i) {
+
+
+                    TextField txt = new TextField();
+                    txt.setText(defaults[i]);
+                    txt.setPromptText(values[i]);
+
+                    texts.put(keys[i], txt);
+                    grid.add(new Label(values[i]), 0, i);
+                    grid.add(txt, 1, i);
+                }
+
+                dialog.getDialogPane().setContent(grid);
+
+                Optional result = dialog.showAndWait();
+                // 确定添加
+                if (result.get().equals(addButtonType)) {
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                    // 验证名字不能为空
+                    String name = texts.get("name").getText();
+                    if (name.isEmpty()) {
+                        alert.setContentText("姓名不能为空");
+                        alert.show();
+                        return;
+                    }
+
+                    String phone = texts.get("phone").getText();
+                    if (phone.length() != 11) {
+                        alert.setContentText("请输入正确的手机号");
+                        alert.show();
+                        return;
+                    }
+
+                    String sex =  texts.get("sex").getText();
+                    if (! (sex.equals("男") || sex.equals("女"))) {
+                        alert.setContentText("性别只有男和女");
+                        alert.show();
+                        return;
+                    }
+
+                    String age = texts.get("age").getText();
+                    if (Integer.valueOf(age) < 0) {
+                        alert.setContentText("请输入正确的年龄");
+                        alert.show();
+                        return;
+                    }
+                    ContactModel model = new ContactModel(
+                            name,
+                            phone,
+                            sex,
+                            age,
+                            texts.get("email").getText()
+                    );
+
+                    if (model.create()) {
+
+                        alert.setAlertType(Alert.AlertType.INFORMATION);
+                        alert.setContentText("添加联系人成功");
+                        alert.show();
+                    }
+
+                }
 
             }
         });
 
-        menuBar.getMenus().addAll(fileMenu, addMenu);
+        fileMenu.getItems().addAll(addItem, new SeparatorMenuItem(), exitItem);
+        menuBar.getMenus().addAll(fileMenu);
 
         return menuBar;
     }

@@ -3,6 +3,7 @@
 ## Show
 ![登录](/media/login.png)
 ![注册](/media/register.png)
+![首页](/media/home.png)
 
 ## TODO
 * 双指针读写文件
