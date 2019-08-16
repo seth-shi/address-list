@@ -1,10 +1,13 @@
 package cn.shiguopeng.databases.tables;
 
+import cn.shiguopeng.app.models.ContactModel;
+import cn.shiguopeng.databases.Field;
 import javafx.beans.property.SimpleStringProperty;
+
+import java.util.HashMap;
 
 public class ContactTable {
 
-    private SimpleStringProperty index;
     private SimpleStringProperty no;
     private SimpleStringProperty name;
     private SimpleStringProperty phone;
@@ -14,7 +17,6 @@ public class ContactTable {
 
     public ContactTable() {
 
-        this.index = new SimpleStringProperty();
         this.no = new SimpleStringProperty();
         this.name = new SimpleStringProperty();
         this.phone = new SimpleStringProperty();
@@ -31,17 +33,6 @@ public class ContactTable {
         return no;
     }
 
-    public String getIndex() {
-        return index.get();
-    }
-
-    public SimpleStringProperty indexProperty() {
-        return index;
-    }
-
-    public void setIndex(String index) {
-        this.index.set(index);
-    }
 
     public void setNo(String no) {
         this.no.set(no);
@@ -105,5 +96,20 @@ public class ContactTable {
 
     public void setEmail(String email) {
         this.email.set(email);
+    }
+
+    public ContactModel toModel() {
+
+        ContactModel model = new ContactModel();
+        HashMap<String, Field> fields = model.getFields();
+        fields.get("no").setValue(this.getNo());
+        fields.get("name").setValue(this.getName());
+        fields.get("sex").setValue(this.getSex());
+        fields.get("phone").setValue(this.getPhone());
+        fields.get("age").setValue(this.getAge());
+        fields.get("email").setValue(this.getEmail());
+
+        // TODO
+        return model;
     }
 }

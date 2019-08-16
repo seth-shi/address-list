@@ -10,12 +10,14 @@ import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -109,16 +111,7 @@ public class HomeView extends ViewFactory {
         ArrayList<ContactTable> contractTables = new ArrayList<>(models.size());
         for (int i = 0; i < models.size(); ++ i) {
 
-            HashMap<String, Field> fields = models.get(i).getFields();
-
-            ContactTable c = new ContactTable();
-            c.setIndex(String.valueOf(i + 1));
-            c.setNo(fields.get("no").getValue());
-            c.setName(fields.get("name").getValue());
-            c.setPhone(fields.get("phone").getValue());
-            c.setSex(fields.get("sex").getValue());
-            c.setAge(fields.get("age").getValue());
-            c.setEmail(fields.get("email").getValue());
+            ContactTable c = ((ContactModel)models.get(i)).toTable();
             contractTables.add(i, c);
         }
 
@@ -126,29 +119,60 @@ public class HomeView extends ViewFactory {
         ObservableList<ContactTable> lists = FXCollections.observableArrayList(contractTables);
         TableView tableView = new TableView();
 
-        TableColumn indexColumn = new TableColumn("序号");
-        TableColumn noColumn = new TableColumn("编号");
-        TableColumn nameColumn = new TableColumn("名字");
-        TableColumn sexColumn = new TableColumn("性别");
-        TableColumn phoneColumn = new TableColumn("手机号");
-        TableColumn ageColumn = new TableColumn("年龄");
-        TableColumn emailColumn = new TableColumn("邮箱");
+        String[] keys = {
+                "no", "name", "sex", "phone", "age", "email"
+        };
+        String[] values = {
+                "编号", "名字", "性别", "手机号", "年龄", "邮箱"
+        };
+
+        for (int i = 0; i < keys.length; ++ i) {
+
+            TableColumn c = new TableColumn(values[i]);
+
+            if (i != 0) {
+                c.setCellFactory(TextFieldTableCell.forTableColumn());
+            }
+            c.setCellValueFactory(new PropertyValueFactory<ContactTable, String>(keys[i]));
+            // 设置编辑, 第一行不可以编辑
+            c.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent>() {
+                @Override
+                public void handle(TableColumn.CellEditEvent cellEditEvent) {
+
+                    String newValue = (String) cellEditEvent.getNewValue();
+                    int column = cellEditEvent.getTablePosition().getColumn();
+                    ContactTable table = (ContactTable)cellEditEvent.getRowValue();
+
+                    // 编辑拿到旧的数据,替换值,然后更新文本
+                    switch (column) {
+                        case 1:
+                            table.setName(newValue);
+                            break;
+                        case 2:
+                            table.setSex(newValue);
+                            break;
+                        case 3:
+                            table.setPhone(newValue);
+                            break;
+                        case 4:
+                            table.setAge(newValue);
+                            break;
+                        case 5:
+                            table.setEmail(newValue);
+                            break;
+                    }
+
+                    // 去修改数据文件
+
+                }
+            });
+
+            tableView.getColumns().add(c);
+        }
+
+
         TableColumn actionsColumn = new TableColumn("操作");
-        // 添加列 隐藏编号
-        noColumn.setVisible(false);
-        tableView.getColumns().addAll(indexColumn, noColumn, nameColumn, sexColumn, phoneColumn, ageColumn, emailColumn, actionsColumn);
-
-
-        // 绑定数据列
-        indexColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("index"));
-        noColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("no"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("name"));
-        sexColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("sex"));
-        phoneColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("phone"));
-        ageColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("age"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<ContactModel, String>("email"));
-
-        // 修改按钮列
+        tableView.getColumns().add(actionsColumn);
         actionsColumn.setCellFactory(new Callback<TableColumn, TableCell>() {
             @Override
             public TableCell call(TableColumn tableColumn) {
@@ -157,6 +181,7 @@ public class HomeView extends ViewFactory {
             }
         });
 
+        tableView.setEditable(true);
         // 设置数据
         tableView.setItems(lists);
         // 没有数据的时候显示

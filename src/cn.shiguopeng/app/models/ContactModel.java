@@ -3,6 +3,7 @@ package cn.shiguopeng.app.models;
 import cn.shiguopeng.Main;
 import cn.shiguopeng.contracts.Model;
 import cn.shiguopeng.databases.Field;
+import cn.shiguopeng.databases.tables.ContactTable;
 import cn.shiguopeng.enums.StoreOptionEnum;
 import cn.shiguopeng.foundtions.ModelFactory;
 
@@ -59,6 +60,18 @@ public class ContactModel extends ModelFactory {
     }
 
 
+    public ContactTable toTable() {
+
+        ContactTable t = new ContactTable();
+        t.setNo(fields.get("no").getValue());
+        t.setName(fields.get("name").getValue());
+        t.setPhone(fields.get("phone").getValue());
+        t.setSex(fields.get("sex").getValue());
+        t.setAge(fields.get("age").getValue());
+        t.setEmail(fields.get("email").getValue());
+
+        return t;
+    }
 
     @Override
     public boolean whereIs(Model model) {

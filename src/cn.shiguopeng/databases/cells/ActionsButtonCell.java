@@ -36,14 +36,31 @@ public class ActionsButtonCell<S, T> extends TableCell<S, T> {
             updateBtn.setOnMouseClicked((me) -> {
 
                 ContactTable t = (ContactTable) this.getTableView().getItems().get(this.getIndex());
-                System.out.println("删除 " + this.getIndex());
+
+                ContactModel oldModel = new ContactModel(t.getNo());
+                ContactModel newModel = new ContactModel(
+                        t.getNo(), t.getName(), t.getPhone(), t.getSex(), t.getAge(), t.getEmail()
+                );
+
+                if (oldModel.update(newModel))  {
+
+                    // this.getTableView().getItems().remove(this.getIndex());
+                } else {
+
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("请稍后再试");
+                    alert.show();
+                }
             });
+
+            // 删除按钮
             delBtn.setOnMouseClicked((me) -> {
 
                 ContactTable t = (ContactTable) this.getTableView().getItems().get(this.getIndex());
                 if (new ContactModel(t.getNo()).delete()) {
 
                     this.getTableView().getItems().remove(this.getIndex());
+                    this.getTableView().refresh();
                 } else {
 
                     Alert alert = new Alert(Alert.AlertType.ERROR);
