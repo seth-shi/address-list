@@ -23,35 +23,13 @@ public class ActionsButtonCell<S, T> extends TableCell<S, T> {
         if (! empty) {
 
 
-            Button updateBtn = new Button("修改");
-            updateBtn.getStyleClass().addAll("btn-sm", "btn-primary");
-
             Button delBtn = new Button("删除");
             delBtn.getStyleClass().addAll("btn-sm", "btn-danger");
 
             HBox b = new HBox();
-            b.getChildren().addAll(updateBtn, delBtn);
+            b.getChildren().addAll(delBtn);
             this.setGraphic(b);
 
-            updateBtn.setOnMouseClicked((me) -> {
-
-                ContactTable t = (ContactTable) this.getTableView().getItems().get(this.getIndex());
-
-                ContactModel oldModel = new ContactModel(t.getNo());
-                ContactModel newModel = new ContactModel(
-                        t.getNo(), t.getName(), t.getPhone(), t.getSex(), t.getAge(), t.getEmail()
-                );
-
-                if (oldModel.update(newModel))  {
-
-                    // this.getTableView().getItems().remove(this.getIndex());
-                } else {
-
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("请稍后再试");
-                    alert.show();
-                }
-            });
 
             // 删除按钮
             delBtn.setOnMouseClicked((me) -> {

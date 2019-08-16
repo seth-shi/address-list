@@ -1,16 +1,18 @@
 package cn.shiguopeng.app.views;
 
 import cn.shiguopeng.app.controllers.LoginController;
+import cn.shiguopeng.app.models.UserModel;
+import cn.shiguopeng.enums.StoreOptionEnum;
 import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.foundtions.ViewFactory;
 import cn.shiguopeng.app.controllers.RegisterController;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
@@ -65,11 +67,77 @@ public class RegisterView extends ViewFactory {
         scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
         stage.setScene(scene);
 
-        RegisterController controller = (RegisterController) this.controller;
         // 点击注册
-        loginLabel.setOnMouseClicked(controller.gotoLoginEvent());
-        registerButton.setOnAction(controller.registerEvent(usernameInput, passwordInput, confirmPasswordInput));
+        loginLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
 
+                // 跳转去登录界面
+                try {
+
+                    new LoginController().start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // 关闭当前窗口
+                stage.close();
+            }
+        });
+        registerButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                String username = usernameInput.getText();
+                String password = passwordInput.getText();
+                String confirmPassword = confirmPasswordInput.getText();
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                if (! password.equals(confirmPassword)) {
+
+                    alert.setContentText("两次密码不一致");
+                    alert.show();
+                    return;
+                }
+
+                if (password.length() < 4) {
+
+                    alert.setContentText("请把密码设置得复杂一点");
+                    alert.show();
+                    return;
+                }
+
+                // 用户名和密码都不能包含 =
+                if (username.contains(String.valueOf(StoreOptionEnum.FILL_BLACK_MARK))) {
+
+                    alert.setContentText("用户名不能包含" + StoreOptionEnum.FILL_BLACK_MARK + "符号");
+                    alert.show();
+                    return;
+                }
+
+                if (password.contains(String.valueOf(StoreOptionEnum.FILL_BLACK_MARK))) {
+
+                    alert.setContentText("密码不能包含" + StoreOptionEnum.FILL_BLACK_MARK + "符号");
+                    alert.show();
+                    return;
+                }
+
+                UserModel inputUser = new UserModel(username, password);
+
+                if (inputUser.first() != null) {
+
+                    alert.setContentText("用户名已经存在");
+                    alert.show();
+                    return;
+                }
+
+                // 创建用户
+                inputUser.create();
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setContentText("注册成功,请去登录吧");
+                alert.showAndWait();
+            }
+        });
         stage.show();
     }
 }

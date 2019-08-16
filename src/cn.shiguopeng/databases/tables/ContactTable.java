@@ -109,7 +109,6 @@ public class ContactTable {
         fields.get("age").setValue(this.getAge());
         fields.get("email").setValue(this.getEmail());
 
-        // TODO
         return model;
     }
 }

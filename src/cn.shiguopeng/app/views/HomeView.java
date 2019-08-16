@@ -1,15 +1,14 @@
 package cn.shiguopeng.app.views;
 
-import cn.shiguopeng.app.controllers.HomeController;
 import cn.shiguopeng.app.models.ContactModel;
 import cn.shiguopeng.contracts.Model;
-import cn.shiguopeng.databases.Field;
 import cn.shiguopeng.databases.cells.ActionsButtonCell;
 import cn.shiguopeng.databases.tables.ContactTable;
 import cn.shiguopeng.foundtions.ViewFactory;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,18 +24,15 @@ import javafx.util.Callback;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class HomeView extends ViewFactory {
 
-    private HomeController homeController;
 
     @Override
     public void render() {
 
         super.render();
 
-        homeController = (HomeController) this.controller;
 
         // 最外层容器
         BorderPane container = new BorderPane();
@@ -53,7 +49,6 @@ public class HomeView extends ViewFactory {
         pagination.setPageCount(pageCount);
 
         // 设置分页数据
-        homeController.setPagination(pagination);
         Panel panel = new Panel();
         HBox header = new HBox();
 
@@ -61,13 +56,20 @@ public class HomeView extends ViewFactory {
         reloadBtn.getStyleClass().addAll("btn", "btn-default");
         reloadBtn.setAlignment(Pos.CENTER_RIGHT);
         reloadBtn.setPadding(new Insets(0, 0, 0, 100));
+        reloadBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                pagination.getPageFactory().call(pagination.getCurrentPageIndex() - 1);
+            }
+        });
 
         header.getChildren().addAll(new Text("欢迎使用通讯录"), reloadBtn);
         panel.setHeading(header);
         panel.getStyleClass().add("panel-info");
         panel.setBody(pagination);
 
-        container.setTop(makeMenus(homeController));
+        container.setTop(makeMenus());
         container.setCenter(panel);
 
         Scene scene = new Scene(container, 100, 20);
@@ -78,7 +80,7 @@ public class HomeView extends ViewFactory {
     }
 
 
-    private Node makeMenus(HomeController controller) {
+    private Node makeMenus() {
 
         MenuBar menuBar = new MenuBar();
         menuBar.prefWidthProperty().bind(stage.widthProperty());
@@ -92,7 +94,12 @@ public class HomeView extends ViewFactory {
 
         // 新建联系人
         Menu addMenu = new Menu("添加联系人");
-        addMenu.setOnAction(controller.addContactAction());
+        addMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        });
 
         menuBar.getMenus().addAll(fileMenu, addMenu);
 
@@ -163,7 +170,13 @@ public class HomeView extends ViewFactory {
                     }
 
                     // 去修改数据文件
-
+                    ContactModel model = table.toModel();
+                    ContactModel oldModel = new ContactModel(table.getNo());
+                    if (! oldModel.update(model)) {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setContentText("请稍后再试");
+                        alert.show();
+                    }
                 }
             });
 

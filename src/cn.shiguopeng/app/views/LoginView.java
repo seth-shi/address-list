@@ -1,15 +1,17 @@
 package cn.shiguopeng.app.views;
 
 import cn.shiguopeng.app.controllers.LoginController;
+import cn.shiguopeng.app.controllers.RegisterController;
+import cn.shiguopeng.app.models.UserModel;
 import cn.shiguopeng.foundtions.ControllerFactory;
 import cn.shiguopeng.foundtions.ViewFactory;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.scene.layout.Panel;
@@ -57,11 +59,54 @@ public class LoginView extends ViewFactory {
         stage.setScene(scene);
 
 
-        LoginController controller = (LoginController) this.controller;
 
         // 点击注册
-        registerLabel.setOnMouseClicked(controller.gotoRegisterEvent());
-        loginBtn.setOnAction(controller.loginEvent(usernameInput, passwordInput));
+        registerLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+
+                // 跳转去注册页面
+                try {
+                    new RegisterController().start(new Stage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                // 关闭当前窗口
+                stage.close();
+            }
+        });
+        loginBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                String username = usernameInput.getText();
+                String password = passwordInput.getText();
+
+                UserModel inputUser = new UserModel(username, password);
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+
+                UserModel dbUser = (UserModel) inputUser.first();
+                if (dbUser == null) {
+
+                    alert.setContentText("无效的用户名");
+                    alert.show();
+                    return;
+                }
+
+                // 密码加密解码
+                if (! dbUser.is(inputUser)) {
+
+                    alert.setContentText("密码错误");
+                    alert.show();
+                    return;
+                }
+
+                alert.setAlertType(Alert.AlertType.INFORMATION);
+                alert.setContentText("登录成功");
+                alert.showAndWait();
+            }
+        });
 
         stage.show();
     }
